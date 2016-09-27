@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/ashojash-53":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/ashojash-53","hostpath":"E:/web_development/project/ashojash-53","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"E:/web_development/project/ashojash-53","disabled":false,"__vagrantfile":true}}}
