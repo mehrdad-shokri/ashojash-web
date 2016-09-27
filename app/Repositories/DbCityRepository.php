@@ -17,7 +17,7 @@ class DbCityRepository implements CityRepository {
 
 	public function available($limit=20)
 	{
-		return City::where('status', 1)->take($limit);
+		return City::where('status', 1)->take($limit)->get();
 	}
 
 	public function all($with = null)

@@ -1,0 +1,55 @@
+@import "../shared/colors";
+
+.activeMenuItem {
+  color: $brandColor !important;
+}
+
+.menuItem {
+  direction: rtl;
+  color: #b8b7ad;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.8em;
+  &:hover {
+    color: $brandColor
+  }
+  span {
+    margin-right: 10px;
+  }
+}
+
+.myLove {
+  cursor: default;
+  right: 25%;
+  text-align: center;
+  position: fixed;
+  bottom: 5px;
+  margin-bottom: 5px;
+  color: white;
+  font-size: 1.4rem;
+  .heart {
+    animation: heartbeat 1s infinite;
+    color: #ff5a8e;
+  }
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(.75);
+  }
+  20% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(.75);
+  }
+  60% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(.75);
+  }
+  100% {
+    transform: scale(.75);
+  }
+}

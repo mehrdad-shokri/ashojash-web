@@ -1,0 +1,56 @@
+.dropzoneContainer {
+  width: 235px;
+  margin-right: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 5px 5px 2px rgba(0, 0, 0, 0.24);
+  &:hover {
+    cursor: pointer;
+  }
+
+}
+
+.photoContainer {
+  @media (min-width: 1200px) {
+    margin-right: 20px;
+  }
+  @media (max-width: 1200px) {
+    margin-right: 10px;
+  }
+  display: inline-block;
+  height: 342px;
+  width: 236px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 5px 5px 2px rgba(0, 0, 0, 0.24);
+}
+
+.preview {
+  width: 233px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6), 5px 5px 2px rgba(0, 0, 0, 0.24);
+  @media (min-width: 1200px) {
+    margin-right: 20px;
+  }
+  @media (max-width: 1200px) {
+    margin-right: 10px;
+  }
+}
+
+.photo {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.dropzone {
+  display: inline;
+  min-height: 100%;
+}
+
+.text {
+  text-align: center;
+}
+
+.error {
+  background-color: #fb3131;
+  color: white;
+  border-radius: 9px;
+  margin-top: 20px;
+  padding: 5px 10px;
+}

@@ -4,6 +4,7 @@
 use App\City;
 use App\Location;
 use App\Venue;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,7 @@ class DbVenueRepository implements VenueRepository {
 
 	public function create($name, $phone, $status = 0)
 	{
-		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status]);
+		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status,'starts_at'=>Carbon::now(),'valid_until'=>Carbon::now()->subMinute(),'score'=>0,'cost'=>0,'type'=>0]);
 	}
 
 	public function whereCity($slug, City $city)
@@ -131,7 +132,7 @@ class DbVenueRepository implements VenueRepository {
 			->from('locations')
 			->havingRaw("lat BETWEEN $userLat - ($distance / 111.045) AND $userLat + ($distance/111.045)")
 			->havingRaw("lng BETWEEN $userLng - ($distance / (111.045 * COS(RADIANS($userLat)))) AND $userLng + ($distance / (111.045 * COS(RADIANS($userLat))))")
-			->lists('id');
+			->pluck('id');
 		$locations = Location::select(DB::raw("* , 111.045* DEGREES(ACOS(COS(RADIANS($userLat))
                  * COS(RADIANS(lat))
                  * COS(RADIANS($userLng) - RADIANS(lng))
@@ -179,7 +180,6 @@ class DbVenueRepository implements VenueRepository {
 			$relevance = 15;
 			$searchWholeWord = true;
 		}
-
 		$result = Venue::search($query, $relevance, $searchWholeWord)->with('location')->whereHas('location', function ($query) use ($city)
 		{
 			$query->whereCityId($city->getKey());

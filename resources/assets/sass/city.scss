@@ -1,0 +1,48 @@
+.cities {
+  padding: 30px 0;
+  @media (max-width: 990px) {
+    div:first-child{
+      padding-bottom: 60px;
+    }
+  }
+}
+
+.city-block {
+  position: relative;
+
+  a:first-of-type {
+    &:hover .city-label {
+      background: $brand-color none repeat scroll 0% 0%;
+    }
+    border-radius: 5px 5px 0 0;
+    display: block;
+    position: relative;
+    height: 317px;
+    border-top: 6px solid $brand-color;
+    .city-label {
+      z-index: 100;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 200px;
+      height: 36px;
+      font-size: 15px;
+      line-height: 36px;
+      color: #FFF;
+      display: block;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: bold;
+      background: #999 none repeat scroll 0% 0%;
+      &:hover {
+        background: $brand-color none repeat scroll 0% 0%;
+      }
+    }
+    img:first-of-type {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      border-radius: 0 0 5px 5px;
+    }
+  }
+}

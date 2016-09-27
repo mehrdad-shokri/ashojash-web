@@ -1,0 +1,1 @@
+{"version":3,"sources":["admin.table.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA","file":"all.js","sourcesContent":["jquery(document).ready(function ($) {\r\n    $(\".clickable-row\").click(function () {\r\n        window.document.location = $(this).data(\"href\");\r\n    })\r\n});"],"sourceRoot":"/source/"}

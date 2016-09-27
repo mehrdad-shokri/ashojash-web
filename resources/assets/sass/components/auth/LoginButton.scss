@@ -1,0 +1,87 @@
+
+.loginBtn {
+  padding: 0;
+  position: relative;
+  width: 100%;
+  height: 4rem;
+  margin: 2rem 0 .1rem;
+  color: rgba(255, 255, 255, 0.8);
+  background: #FF3366;
+  font-size: 1.5rem;
+  border-radius: 3rem;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
+  transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
+  outline: none;
+  border: none;
+  &:hover, &:focus {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    top: 48%;
+    left: 48%;
+    margin-left: -1.5rem;
+    margin-top: -1.5rem;
+    width: 3rem;
+    height: 3rem;
+    border: 2px dotted #fff;
+    border-radius: 50%;
+    border-left: none;
+    border-bottom: none;
+    -webkit-transition: opacity 0.1s 0.4s;
+    transition: opacity 0.1s 0.4s;
+    opacity: 0;
+  }
+}
+
+.isProcessing {
+  width: 4rem;
+  &:after {
+    opacity: 1;
+    -webkit-animation: rotate 0.5s 0.4s infinite linear;
+    animation: rotate 0.5s 0.4s infinite linear;
+  }
+}
+
+.fa {
+  font-size: 3rem;
+}
+
+.isSuccess {
+  background-color: #54cc54;
+  &:after {
+    transition: opacity 0s 0s;
+  }
+}
+
+.isError {
+  background-color: #ff252c;
+  &:after {
+    transition: opacity 0s 0s;
+  }
+}
+
+@-webkit-keyframes animRipple {
+  to {
+    -webkit-transform: scale(3.5);
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

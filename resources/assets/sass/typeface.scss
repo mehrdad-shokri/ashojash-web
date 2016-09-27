@@ -1,0 +1,23 @@
+//@import url(https://fonts.googleapis.com/css?family=PT+Serif);
+
+@font-face {
+  font-family: free-typface; /*a name to be used later*/
+  src: url('/fonts/free.ttf') format('truetype');  /*URL to font*/
+}
+
+body {
+  font-family: 'PT Serif', 'free', serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.free-sans {
+  font-family: 'free-typface';
+  -webkit-font-smoothing: antialiased;
+  text-align: right;
+  direction: rtl;
+}
+
+.free-sans-font-only {
+  font-family: 'free-typface';
+  -webkit-font-smoothing: antialiased;
+}

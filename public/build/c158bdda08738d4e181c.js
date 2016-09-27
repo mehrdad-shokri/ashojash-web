@@ -1,0 +1,2 @@
+webpackJsonp([5,13],{552:function(n,t,e){"use strict";n.exports={path:"collections",getIndexRoute:function(n,t){e.e(6,function(){var n=e(553);t(null,{component:n})})},getChildRoutes:function(n,t){e.e(7,function(){t(null,[e(662)])})}},function(){"undefined"==typeof __REACT_HOT_LOADER__}()}});
+//# sourceMappingURL=c158bdda08738d4e181c.js.map

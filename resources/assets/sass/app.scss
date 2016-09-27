@@ -1,9 +1,14 @@
-
-// Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
-// Variables
+@import "bootstrap";
+@import "libs/sweetalert";
 @import "variables";
-
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "typeface";
+@import "navbar";
+@import "font-awesome/font-awesome";
+@import "ionicons/ionicons";
+@import "sweet-alert";
+@import "helpers";
+@import "modals";
+@import "cuisine";
+@import "static";
+@import "typeahead";
+@import "auth";

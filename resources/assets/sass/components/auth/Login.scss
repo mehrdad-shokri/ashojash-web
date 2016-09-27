@@ -1,0 +1,98 @@
+.login {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../../../statics/img/auth/login.jpg) no-repeat center center fixed;
+  height: 100vh;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 100%;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  color: #fff;
+}
+
+.formContainer {
+  width: 250px;
+  background: -webkit-linear-gradient(top, rgba(146, 135, 187, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(to bottom, rgba(146, 135, 187, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  -webkit-transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+  transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+  transition: opacity 0.1s, transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+  transition: opacity 0.1s, transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25), -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+  -webkit-transform: scale(1);
+  padding: 1.5rem 2.5rem;
+
+  .logo {
+    img {
+      max-width: 150px;
+    }
+  }
+  .form {
+    form {
+      margin-bottom: 0;
+    }
+    margin-top: 40px;
+    .formRow {
+      height: 4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 27px;
+      svg {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        overflow: visible;
+        cursor: pointer;
+        margin-bottom: -0.4rem;
+        margin-right: 0.5rem;
+        path {
+          stroke-dasharray: 92.10662841796875;
+          stroke-dashoffset: 92.10662841796875;
+          -webkit-animation: animatePath 2s 0.5s forwards;
+          animation: animatePath 2s 0.5s forwards;
+          stroke: rgba(255, 255, 255, 0.9);
+          fill: none;
+          stroke-width: 1;
+        }
+      }
+      input {
+        margin: 0;
+        padding: 6px 1.5rem 0 0;
+        display: inline-block;
+        width: 22rem;
+        height: 100%;
+        font-size: 1.5rem;
+        background: transparent;
+        color: #FDFCFD;
+        outline: none;
+        border: none;
+      }
+    }
+  }
+}
+
+.fieldError {
+  border: 1px solid #ff4300 !important;
+  border-radius: 2px;
+}
+
+.fieldErrorMessage {
+  color: #ff4300;
+  text-align: right;
+  margin-right: 30px;
+}
+
+@-webkit-keyframes animatePath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes animatePath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

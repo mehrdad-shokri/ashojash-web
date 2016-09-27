@@ -18,7 +18,9 @@
         "league/fractal": "dev-master",
         "tymon/jwt-auth": "1.0.0-alpha.3",
         "doctrine/dbal": "^2.5",
-        "dingo/blueprint": "^0.2.0"
+        "dingo/blueprint": "^0.2.0",
+        "artisaninweb/laravel-soap": "0.2.5.10",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -32,7 +34,7 @@
         "classmap": [
             "database",
             "app/Repositories",
-            "app/Transformers"
+            "app/Api/Transformer"
         ],
         "files": [
             "app/Helpers/jdatetime.class.php",

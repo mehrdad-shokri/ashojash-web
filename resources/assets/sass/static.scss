@@ -1,0 +1,223 @@
+img {
+  width: 100%;
+  height: auto;
+}
+
+.we-do {
+  li {
+    b {
+      font-size: 20px;
+    }
+    P {
+      font-size: 1.2em;
+    }
+    margin-bottom: 20px;
+    list-style-type: none;
+  }
+}
+
+.biz-owner-welcome {
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.biz-form-title {
+  color: #2D2D2D;
+  z-index: 1;
+  font-size: 23px;
+  text-align: center;
+}
+
+.light-gray-bg {
+  background-color: #FAFAF9;
+}
+
+.biz-logo {
+  border-radius: 10px;
+  display: block;
+  margin: auto;
+}
+
+.searchFieldContainer {
+  .twitter-typeahead {
+    display: block !important;
+    width: 100%;
+  }
+  #venueName, #cityName {
+    border: 1px solid #62D6F0;
+  }
+  .tt-input {
+    font-weight: 200;
+    font-size: 1.25em;
+    border: 0;
+    height: 60px;
+    line-height: 25px;
+    padding: 0 20px;
+  }
+  .tt-hint {
+    font-weight: 200;
+    font-size: 1.25em;
+    border: 0;
+    height: 60px;
+    line-height: 25px;
+    padding: 0 20px;
+  }
+}
+
+.features-screenshot-container {
+  width: 100%;
+  height: 500px;
+  .features-img-crop-container {
+    img.features-manager-screen {
+      position: absolute;
+      width: 700px;
+      margin-bottom: 0px;
+      border-style: solid;
+      border-color: #000;
+      border-width: 25px 25px 0px;
+      border-radius: 25px 25px 0px 0px;
+      opacity: 0.5;
+      transition: all 0.4s ease-in-out 0s;
+      &.left {
+        left: 7%;
+        top: 10%;
+        z-index: 801;
+      }
+      &.middle {
+        opacity: 1;
+        top: 7%;
+        left: 22%;
+        z-index: 900;
+      }
+      &.right {
+        top: 10%;
+        right: 6%;
+        z-index: 800;
+
+      }
+
+    }
+  }
+}
+
+.features-info-container {
+  z-index: 1000;
+  position: relative;
+}
+
+.features-text-describe {
+  font-size: 17px;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0px 0px 20px;
+  color: #747474;
+}
+
+.footer {
+  .s-title {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 24px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    word-spacing: -1px;
+    color: #5D5D5D;
+    text-shadow: 0px 1px 1px #FFF;
+  }
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  #ashojash {
+    font-size: 25px;
+    margin-top: 0;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  li {
+    padding: 0px 0px 5px;
+    a {
+      color: #8e8e8e;
+      font-size: 14px;
+      text-shadow: none;
+      outline: 0px none;
+    }
+  }
+}
+
+.contact-hero-title {
+  float: right;
+  display: inline-block;
+  border-bottom: 1px solid #fff;
+  border-color: rgba(255, 255, 255, .2);
+}
+
+.contact-container {
+  input {
+    height: 45px;
+  }
+}
+
+article.content-policy {
+  $cookieFontSize: 16px;
+  p {
+    font-size: $cookieFontSize;
+  }
+  ol, ul {
+    padding-right: 16px;
+    li {
+      margin-bottom: 15px;
+      font-size: $cookieFontSize;
+    }
+  }
+  ol {
+    span {
+      text-decoration: underline;
+    }
+  }
+}
+
+article.cookie-policy {
+  $cookieFontSize: 16px;
+  p {
+    font-size: $cookieFontSize;
+  }
+  ol, ul {
+    padding-right: 0;
+    list-style-type: none;
+    li {
+      margin-bottom: 15px;
+      font-size: $cookieFontSize;
+    }
+  }
+  ol {
+    span {
+      text-decoration: underline;
+    }
+  }
+}

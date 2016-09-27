@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 
 class Collection extends Model {
-
+use Sluggable,SluggableScopeHelpers;
 	protected $casts = [
 		'show_content' => 'boolean'
 	];
@@ -54,5 +56,19 @@ class Collection extends Model {
 		if ($parent instanceof Venue) return new CollectionVenuePivot($parent, $attributes, $table, $exists);
 		return parent::newPivot($parent, $attributes, $table, $exists);
 	}
+
+/**
+* Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+{
+    return [
+        'slug'=>[
+            'source'=>'name',
+        ]
+    ];
+}
 
 }

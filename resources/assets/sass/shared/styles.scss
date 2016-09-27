@@ -1,0 +1,15 @@
+@import './fonts';
+
+.farsi {
+  @extend .faFont;
+  text-align: right;
+  direction: rtl;
+}
+
+.inline {
+  display: inline;
+}
+
+.loader-60devs .loader-60devs-progress {
+  background: #ff6f00;
+}

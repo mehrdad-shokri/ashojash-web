@@ -1,23 +1,42 @@
 <?php
+$factory->define(App\Collection::class, function (Faker\Generator $faker)
+{
+	$faker = Faker\Factory::create('fa_IR');
+	return [
+		'name' => $faker->name,
+		'description' => $faker->realText(),
+		'type' => $faker->numberBetween(1, 255),
+		'city_id' => 1,
+		'active' => 1,
+		'starts_at' => $faker->dateTimeThisMonth,
+		'ends_at' => $faker->dateTimeThisMonth,
+	];
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
+});
+$factory->define(App\Venue::class, function (Faker\Generator $faker)
+{
+	$faker = Faker\Factory::create('fa_IR');
+	return [
+		'name' => $faker->name,
+		'score' => $faker->numberBetween(1, 5),
+		'cost' => $faker->numberBetween(1, 5),
+		'instagram' => $faker->url,
+		'url' => $faker->url,
+		'phone' => $faker->phoneNumber,
+		'mobile' => $faker->phoneNumber,
+		'status' => 1,
+		'created_at' => $faker->date(),
+		'updated_at' => $faker->date()
+	];
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
-
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
-    ];
+});
+$factory->define(App\City::class, function (Faker\Generator $faker)
+{
+	$faker = Faker\Factory::create('fa_IR');
+	return [
+		'name' => $faker->city,
+		'status' => 1,
+		'lat' => $faker->latitude,
+		'lng' => $faker->longitude
+	];
 });

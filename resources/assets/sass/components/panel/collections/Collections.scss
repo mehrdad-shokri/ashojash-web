@@ -1,0 +1,22 @@
+.collections {
+  td, th {
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+.active {
+  color: #18e20e;
+}
+
+.inactive {
+  color: #fb1312;
+}
+
+.activeCollection {
+  //background-color: #fb1312;
+}
+
+.inactiveCollection {
+  background-color: #e6e6e6;
+}

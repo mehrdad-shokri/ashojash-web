@@ -1,0 +1,61 @@
+.empty-plate {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../../../statics/img/errors/error.jpg) no-repeat center center fixed;
+}
+
+.tragedy {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../../../statics/img/errors/tragedy.gif) no-repeat center center fixed;
+}
+
+.error {
+  height: 100vh;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 100%;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  display: flex;
+  text-align: center;
+  color: #fff;
+}
+
+.errorStatus {
+  font-size: 140px;
+  line-height: .5em;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.errorMessage {
+  font-size: 3rem;
+
+}
+
+.ghostButton {
+  display: inline-block;
+  width: 100px;
+  padding: 8px;
+  color: #fff;
+  text-align: center;
+  outline: none;
+  text-decoration: none;
+  transition: background-color 0.2s ease-out,
+  color 0.2s ease-out;
+  border: 2px solid #fff;
+  margin-top: 60px;
+  font-size: 2rem;
+  &:hover, &:active {
+    background-color: #fff;
+    color: #000;
+    transition: background-color 0.2s ease-in,
+    color 0.2s ease-in;
+  }
+}
+.gone{
+  display: none;
+}

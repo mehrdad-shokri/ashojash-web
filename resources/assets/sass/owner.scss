@@ -1,0 +1,15 @@
+
+.pull-pagination-right ul.pagination {
+  float: right !important;
+  padding-right: 12px;
+}
+
+.delete-btn {
+  .fa-minus-circle {
+    color: #cc0f00;
+    &:hover {
+      cursor: pointer;
+      color: #bf0f00;
+    }
+  }
+}

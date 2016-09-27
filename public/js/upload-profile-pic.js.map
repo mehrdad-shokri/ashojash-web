@@ -1,0 +1,1 @@
+{"version":3,"sources":["upload-profile-pic.js"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA","file":"upload-profile-pic.js","sourcesContent":["/*\r\n$(document).ready(function () {\r\n    $(\"#upload_photo\").click(function () {\r\n\r\n    });\r\n});*/\r\n"],"sourceRoot":"/source/"}

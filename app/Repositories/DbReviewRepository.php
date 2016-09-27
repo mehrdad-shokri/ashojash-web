@@ -11,9 +11,8 @@ class DbReviewRepository implements ReviewRepository {
 
 	public function userFeedSimplePaginated(User $user)
 	{
-		$followedUsersId = $user->follows()->lists('followed_id');
+		$followedUsersId = $user->follows()->pluck('followed_id');
 		$followedUsersId[] = $user->getKey();
-
 		return Review::with('user', 'venue')->whereIn("user_id", $followedUsersId)->latest()->simplePaginate();
 	}
 
