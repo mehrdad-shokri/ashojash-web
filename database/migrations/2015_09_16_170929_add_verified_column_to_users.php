@@ -13,7 +13,6 @@ class AddVerifiedColumnToUsers extends Migration
 	public function up()
 	{
 		Schema::table('users', function (Blueprint $table) {
-			$table->rememberToken()->after('password');
 			$table->string('email_token')->after('remember_token')->nullable();
 			$table->tinyInteger('verified')->default(0)->after('remember_token');
 		});
