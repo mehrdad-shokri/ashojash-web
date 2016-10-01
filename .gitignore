@@ -5,3 +5,13 @@
 Homestead.json
 Homestead.yaml
 .env
+tests/_output/*
+storage/
+.env.*
+.ssh
+*.iml
+.idea/
+deploy/
+deploy.php
+.vagrant/*
+Vagrantfile
