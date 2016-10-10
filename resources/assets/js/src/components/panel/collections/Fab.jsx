@@ -11,7 +11,7 @@ export default class Fab extends Component {
 										<li className={cx("mfb-component__wrap")}>
 												<Link
 														to={{
-																pathname: '/admin/panel/collections/new',
+																pathname: '/admin/panel/collection/new',
 																state: {modal: true, returnTo: this.props.pathname}
 														}}
 														className={cx("mfb-component__button--main")}>

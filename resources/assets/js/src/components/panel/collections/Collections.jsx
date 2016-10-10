@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getCollections} from '../../../actions'
-import Fab from './CreateCollectionFab';
+import Fab from './Fab';
 import styles from '../../../../../sass/components/panel/collections/Collections.scss';
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);

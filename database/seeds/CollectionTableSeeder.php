@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
+class CollectionTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
@@ -11,6 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $this->call(VenueTableSeeder::class);
+        factory(App\Collection::class, 10)->create();
     }
 }

@@ -11,6 +11,6 @@
 
 		public function venues()
 		{
-			return $this->belongsToMany('App\Venue');
+			return $this->belongsToMany('App\Venue')->withPivot(['score']);
 		}
 	}

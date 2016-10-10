@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
+class ReviewTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
@@ -11,6 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $this->call(VenueTableSeeder::class);
+        factory(App\Review::class, 1000)->create();
     }
 }

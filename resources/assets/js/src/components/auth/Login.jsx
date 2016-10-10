@@ -64,7 +64,7 @@ class Login extends Component {
 		componentDidUpdate() {
 				if (this.props.authenticated && this.props.token) {
 						setTimeout(()=> {
-								this.context.router.push('/admin/panel/collections');
+								this.context.router.push('/admin/panel/collection');
 						}, 400);
 				}
 		}

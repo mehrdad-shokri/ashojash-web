@@ -1,7 +1,6 @@
 import React from 'react';
 import {Component} from 'react';
-import Menu from '../global/Menu';
-const classNames = require('classnames/bind');
+import Menu from '../panel/Menu';
 import {connect} from 'react-redux';
 
 class Panel extends Component {
@@ -18,7 +17,7 @@ class Panel extends Component {
 						return (
 								<div>
 										<div id="outer-container" style={{height: '100vh'}}>
-												<Menu pageWrapId={'page-wrapper'} outerContainerId={'outer-container'}/>
+												<Menu pageWrapId={'page-wrapper'} outerContainerId={'outer-container'} permissions={this.props.permissions}/>
 												<main id="page-wrapper" style={{height: '100%',  marginRight: 20}}>
 														<div className="container">
 																{this.props.children}
@@ -33,6 +32,7 @@ class Panel extends Component {
 function mapStateToProps(state) {
 		return {
 				isModal: state.modals.isModal,
+				permissions:state.auth.permissions
 		};
 }
 

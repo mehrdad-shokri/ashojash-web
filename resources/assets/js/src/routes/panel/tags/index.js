@@ -1,15 +1,15 @@
 module.exports = {
-		path: 'collection',
+		path: 'tag',
 		getIndexRoute(location, cb){
 				require.ensure([], ()=> {
-						const collections = require('../../../components/panel/collections/Collections');
+						const collections = require('../../../components/panel/tags/Tags');
 						cb(null, {component: collections});
 				})
 		},
 		getChildRoutes(location, cb){
 				require.ensure([], ()=> {
 						cb(null, [
-								require('./createCollection')
+								require('./createTag')
 						])
 				})
 		}

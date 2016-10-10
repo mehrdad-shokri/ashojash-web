@@ -27,7 +27,6 @@
 				$table->foreign('owner_id')->references("id")->on("users")->onDelete("set null");
 				$table->integer('image_id')->unsigned()->nullable();
 				$table->foreign('image_id')->references('id')->on('photos')->onDelete('set null');
-				$table->tinyInteger('type')->unsigned();
 				$table->timestamp('starts_at')->before('valid_until')->useCurrent();
 				$table->timestamp('valid_until')->useCurrent();
 				$table->timestamps();
