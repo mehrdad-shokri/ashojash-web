@@ -31,5 +31,12 @@ export const SET_COLLECTION_TYPE = 'set_collection_type';
 export const RESET_COLLECTION_CREATION = 'reset_collection_creation';
 export const RESET_COLLECTION_STATES = 'reset_collection_states';
 
+export const STORE_TAG = "tag_store";
+export const TAGS_RESPONSE = "tags_response";
+export const TAGS_REQUEST = "tags_request";
+export const STORING_TAG = "storing_tag";
+export const TAG_ERROR = "tag_store_error";
+export const RESET_TAG_STATUS = "reset_tag_status";
+
 export const MODALS = 'modals';
 export const MODAL_TYPE = 'modal_type';

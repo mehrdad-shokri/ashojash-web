@@ -1,5 +1,4 @@
 import {
-		authError,
 		getPermissions,
 		getPermissionsRequest,
 		signinUser,
@@ -27,10 +26,15 @@ import {
 		setCollectionType,
 		resetCollectionCreation,
 		resetCollectionStates
-} from './collections_actions';
+} from './collection_actions';
+import {
+		getTags,
+		newTag,
+		tagError,
+		resetTagStatus
+} from './tag_actions';
 import {setIsModal, setModalType} from './modal_actions';
 export {
-		authError,
 		getPermissions,
 		getPermissionsRequest,
 		signinUser,
@@ -56,6 +60,10 @@ export {
 		resetCollectionCreation,
 		resetCollectionStates,
 		authenticateUser,
-		refreshTokenIfNecessary
+		refreshTokenIfNecessary,
+		getTags,
+		newTag,
+		tagError,
+		resetTagStatus
 };
 export {getCollections};

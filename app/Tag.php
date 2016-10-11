@@ -6,8 +6,7 @@
 
 	class Tag extends Model {
 
-		protected $fillable = ['name'];
-		public $timestamps = false;
+		protected $fillable = ['name','level'];
 
 		public function venues()
 		{
