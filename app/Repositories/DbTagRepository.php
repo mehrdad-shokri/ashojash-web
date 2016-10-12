@@ -15,6 +15,4 @@ class DbTagRepository implements TagRepository {
 	{
 		return Tag::create(['name' => $name, $level]);
 	}
-
-
 }

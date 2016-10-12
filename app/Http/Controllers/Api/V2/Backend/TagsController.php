@@ -50,8 +50,22 @@ class TagsController extends BaseController {
 		{
 			$this->response->errorBadRequest($this->errorResponse($validator));
 		}
-		Log::info($request->all());
 		$this->tagRepository->create($request->get('name'), $request->get('level'));
 		return $this->response->created();
+	}
+
+	public function addPhoto(Request $request)
+	{
+		$rules = [
+			'slug' => 'required',
+			'file' => 'required|image|max:5000',
+		];
+		$validator = app('validator')->make($request->all(), $rules);
+		if ($validator->fails()) {
+			$this->response->errorBadRequest($this->errorResponse($validator));
+		}
+		$collection = $this->tagRepository->findBySlugOrFail($request->get('slug'));
+		FileUploader::uploadFile($collection, $request->file('file'), Auth::user(), true);
+		$this->response->created();
 	}
 }

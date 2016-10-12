@@ -30,6 +30,10 @@ class FileUploader
         } else if ($morphClass == "App\Collection") {
             self::createOrUpdateCollectionPhoto($model, $clientFileName, $nameToBeSaved, $mimeType, $image, $user->getKey());
         }
+        else if ($morphClass == "App\Tag")
+		{
+			self::createOrUpdateTagPhoto($model, $clientFileName, $nameToBeSaved, $mimeType, $image, $user->getKey());
+		}
     }
 
     private static function createOrUpdateCityPhoto(Model $model, $clientFileName, $nameToBeSaved, $mimeType, $image, $userId)
@@ -93,22 +97,32 @@ class FileUploader
     private static function createOrUpdateCuisinePhoto($model, $clientFileName, $nameToBeSaved, $mimeType, $image, $userId)
     {
         $path = "cuisine/" . "$model->slug/" . $nameToBeSaved;
-        $cityId = $model->getKey();
+        $cuisinePhoto = $model->getKey();
         $morphClass = $model->getMorphClass();
         if ($model->photo()->first())
             Storage::disk('local')->delete($model->photo()->first()->path);
-        $model->photo()->updateOrCreate(array('imageable_type' => $morphClass, 'imageable_id' => $cityId), array('path' => $path, 'filename' => $nameToBeSaved, 'original_filename' => $clientFileName, 'mime' => $mimeType, 'user_id' => $userId));
+        $model->photo()->updateOrCreate(array('imageable_type' => $morphClass, 'imageable_id' => $cuisinePhoto), array('path' => $path, 'filename' => $nameToBeSaved, 'original_filename' => $clientFileName, 'mime' => $mimeType, 'user_id' => $userId));
         Storage::disk('local')->put($path, $image);
     }
 
     private static function createOrUpdateCollectionPhoto($model, $clientFileName, $nameToBeSaved, $mimeType, $image, $userId)
     {
         $path = "collections/" . $nameToBeSaved;
-        $cityId = $model->getKey();
+        $collectionId = $model->getKey();
         $morphClass = $model->getMorphClass();
         if ($model->photo()->first())
             Storage::disk('local')->delete($model->photo()->first()->path);
-        $model->photo()->updateOrCreate(array('imageable_type' => $morphClass, 'imageable_id' => $cityId), array('path' => $path, 'filename' => $nameToBeSaved, 'original_filename' => $clientFileName, 'mime' => $mimeType, 'user_id' => $userId));
+        $model->photo()->updateOrCreate(array('imageable_type' => $morphClass, 'imageable_id' => $collectionId), array('path' => $path, 'filename' => $nameToBeSaved, 'original_filename' => $clientFileName, 'mime' => $mimeType, 'user_id' => $userId));
+        Storage::disk('local')->put($path, $image);
+    }
+    private static function createOrUpdateTagPhoto($model, $clientFileName, $nameToBeSaved, $mimeType, $image, $userId)
+    {
+        $path = "tags/" . $nameToBeSaved;
+        $tagId = $model->getKey();
+        $morphClass = $model->getMorphClass();
+        if ($model->photo()->first())
+            Storage::disk('local')->delete($model->photo()->first()->path);
+        $model->photo()->updateOrCreate(array('imageable_type' => $morphClass, 'imageable_id' => $tagId), array('path' => $path, 'filename' => $nameToBeSaved, 'original_filename' => $clientFileName, 'mime' => $mimeType, 'user_id' => $userId));
         Storage::disk('local')->put($path, $image);
     }
 }

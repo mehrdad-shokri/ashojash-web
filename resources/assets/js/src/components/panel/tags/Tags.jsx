@@ -6,6 +6,7 @@ const progress = require('nprogress');
 import styles from '../../../../../sass/components/panel/tags/Tags.scss';
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
+const DropZone = require('react-dropzone');
 import findIndex from 'lodash/findIndex';
 import trim from 'lodash/trim';
 import {TAG_EXISTS_ERROR} from '../../../actions/tag_actions';
@@ -100,8 +101,16 @@ class Tags extends React.Component {
 																return (
 																		<TableRow key={index} selectable={false}>
 																				<TableRowColumn style={{fontSize: 15}}>{item.name}</TableRowColumn>
+																				<TableRowColumn style={{fontSize: 15}}>
+																						<DropZone multiple={false} accept="image/*" className={cx("dropzone")}>
+																								<img
+
+																										src={require('../../../../../statics/img/components/panel/tags/upload.png')}
+																										alt=""/>
+																						</DropZone>
+																				</TableRowColumn>
 																				<TableRowColumn style={{fontSize: 15}}>{item.level}</TableRowColumn>
-																				<TableRowColumn style={{fontSize: 15}}></TableRowColumn>
+
 																		</TableRow>
 																)
 														}) : ""

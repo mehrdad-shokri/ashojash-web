@@ -7,3 +7,13 @@
     border: 1px solid $brandColor !important;
   }
 }
+
+.dropzone {
+  height: 100% ;
+  &:hover{
+    cursor: pointer;
+  }
+  img{
+    max-height: 100%;
+  }
+}
