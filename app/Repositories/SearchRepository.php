@@ -1,15 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 10/2/2016
- * Time: 7:01 PM
- */
 
 namespace app\Repository;
 
 
+use App\City;
+
 interface SearchRepository
 {
+    public function suggestVenue($name, City $city);
 
+    public function searchVenue($name, City $city);
+
+    public function suggestStreet($name, City $city);
+
+    public function searchStreet($name, City $city);
 }

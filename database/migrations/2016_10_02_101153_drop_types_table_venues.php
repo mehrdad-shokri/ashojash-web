@@ -14,7 +14,8 @@ class DropTypesTableVenues extends Migration
     public function up()
     {
         Schema::table('venues', function (Blueprint $table) {
-            $table->dropColumn('type');
+            if (Schema::hasColumn('venues','type'))
+                $table->dropColumn('type');
         });
     }
 
@@ -26,7 +27,8 @@ class DropTypesTableVenues extends Migration
     public function down()
     {
         Schema::table('venues', function (Blueprint $table) {
-            $table->tinyInteger('type')->unsigned()->before('starts_at');
+            if (!Schema::hasColumn('venues','type'))
+                $table->tinyInteger('type')->unsigned()->before('starts_at');
         });
     }
 }

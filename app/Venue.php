@@ -6,13 +6,14 @@ use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Nicolaslopezj\Searchable\SearchableTrait;
 
 class Venue extends Model
 {
     use Sluggable, SluggableScopeHelpers;
     use SearchableTrait;
-
+    use Searchable;
     protected $searchable = [
         'columns' => [
             'venues.name' => 10,
@@ -189,6 +190,12 @@ class Venue extends Model
     {
         if ($parent instanceof Collection) return new CollectionVenuePivot($parent, $attributes, $table, $exists);
         return parent::newPivot($parent, $attributes, $table, $exists);
+    }
+
+    public function toSearchableArray()
+    {
+        $array = array("name" => $this->name, "name_suggest" => $this->name, $this->getKeyName() => $this->getKey());
+        return $array;
     }
 
     /**
