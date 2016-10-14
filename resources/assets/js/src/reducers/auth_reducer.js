@@ -19,7 +19,8 @@ const initialState = {
 		errorMessage: null,
 		authenticated: false,
 		knowIfAuthenticated: false,
-		isAuthenticating: false
+		isAuthenticating: false,
+		permissions:null
 };
 
 export default createReducer(initialState, {

@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,7 +28,7 @@ Route::post('page/feedback', 'PagesController@feedback');
 Auth::routes();
 Route::group(['middleware' => 'guest'], function ()
 {
-    Route::get('auth/confirm/{token}', 'Auth\LoginController@confirmEmail');
+	Route::get('auth/confirm/{token}', 'Auth\LoginController@confirmEmail');
 });
 /*Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -279,8 +280,12 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 				$api->post('panel/collections', $backendControllerNameSpace . "CollectionsController@all");
 				$api->post('panel/collections/store', $backendControllerNameSpace . "CollectionsController@store");
 				$api->get('panel/collections/city/all', $backendControllerNameSpace . "CollectionsController@allCities");
-				$api->post('panel/collection/uploadPhoto', $backendControllerNameSpace . "CollectionsController@addPhoto");
+				$api->post('panel/collections/uploadPhoto', $backendControllerNameSpace . "CollectionsController@addPhoto");
 				$api->post('panel/collections/venue/search', $backendControllerNameSpace . "CollectionsController@searchVenues");
+
+				$api->post('panel/tags', $backendControllerNameSpace . "TagsController@all");
+				$api->post('panel/tags/store', $backendControllerNameSpace . "TagsController@store");
+				$api->post('panel/tags/uploadPhoto', $backendControllerNameSpace . "TagsController@addPhoto");
 			});
 
 		});

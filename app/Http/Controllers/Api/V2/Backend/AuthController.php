@@ -103,7 +103,13 @@ class AuthController extends BaseController
 
     public function getPermissions()
     {
-        $permissions = Permission::all();
-        return $this->response->collection($permissions, new PermissionTransformer());
+        $userRoles = Auth::user()->roles()->get();
+        $userPermissions = collect();
+        foreach ($userRoles as $role) {
+            $role->perms()->get()->each(function ($item) use ($userPermissions) {
+                $userPermissions->push($item);
+            });
+        }
+        return $this->response->collection($userPermissions->unique('id'), new PermissionTransformer());
     }
 }

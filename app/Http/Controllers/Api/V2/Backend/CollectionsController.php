@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 8/23/2016
- * Time: 5:53 PM
- */
 
 namespace App\Http\Controllers\Api\V2\Backend;
 
@@ -12,18 +6,14 @@ namespace App\Http\Controllers\Api\V2\Backend;
 use App\Api\Transformer\Backend\CollectionTransformer;
 use App\Api\Transformer\CityTransformer;
 use App\Api\Transformer\VenueTransformer;
-use App\Collection;
 use App\Http\Controllers\Api\v2\BaseController;
 use app\Repository\CityRepository;
 use app\Repository\CollectionRepository;
 use app\Repository\VenueRepository;
-use App\Venue;
 use Carbon\Carbon;
-use Dingo\Api\Routing\Adapter\Laravel;
 use FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class CollectionsController extends BaseController
 {

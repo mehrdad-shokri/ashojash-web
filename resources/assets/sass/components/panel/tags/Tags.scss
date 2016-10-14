@@ -1,0 +1,19 @@
+@import "../../../shared/colors";
+
+.tagSelect {
+  margin-top: 34px;
+  width: 100%;
+  &:focus, &:hover {
+    border: 1px solid $brandColor !important;
+  }
+}
+
+.dropzone {
+  height: 100% ;
+  &:hover{
+    cursor: pointer;
+  }
+  img{
+    max-height: 100%;
+  }
+}

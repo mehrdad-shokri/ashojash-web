@@ -27,10 +27,6 @@ export function signinUser(login, password) {
 						localStorage.setItem('exp', token.exp);
 						dispatch({type: AUTH_LOGIN, payload: response.data});
 				}).catch(e => {
-						/*	console left intentional to see which properties are available for handling error
-						 console.log(e.response);
-						 console.log(e.message);
-						 console.log(e.config);*/
 						dispatch({type: AUTH_LOGIN_ERROR, payload: e.response.data.message});
 				});
 		}
