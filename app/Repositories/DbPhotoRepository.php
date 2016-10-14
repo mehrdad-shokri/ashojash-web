@@ -59,7 +59,7 @@ class DbPhotoRepository implements PhotoRepository {
 	public function tagPhoto(Tag $tag)
 	{
 		$tagPhoto = $tag->photo()->first();
-		return $tagPhoto ? $tagPhoto : self::getDefaultPhoto();
+		return $tagPhoto;
 	}
 
 	public function venuePhotos(Venue $venue)

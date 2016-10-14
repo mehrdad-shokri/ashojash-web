@@ -180,7 +180,7 @@ export function newCollection(collectionName, collectionDescription, collectionT
             let data = new FormData();
             data.append('slug', response.data.slug);
             data.append('file', collectionPhoto);
-            getAuthInstance().post(`${ROOT_URL}/panel/collection/uploadPhoto`, data)
+            getAuthInstance().post(`${ROOT_URL}/panel/collections/uploadPhoto`, data)
                 .then(()=> {
                     dispatch({type: COLLECTION_CREATED});
                 });

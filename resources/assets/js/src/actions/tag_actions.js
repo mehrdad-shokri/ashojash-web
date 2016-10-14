@@ -3,9 +3,11 @@ import {
 		STORE_TAG,
 		TAGS_RESPONSE,
 		TAGS_REQUEST,
-		TAG_ERROR,
+		TAG_MESSAGE,
 		STORING_TAG,
-		RESET_TAG_STATUS
+		RESET_TAG_STATUS,
+		UPLOADING_TAG_PHOTO,
+		TAG_PHOTO_UPLOADED
 }from './types';
 export const TAG_EXISTS_ERROR = "تگ قبلا انتخاب شده";
 export function getTags() {
@@ -21,7 +23,7 @@ export function getTags() {
 								payload: response.data
 						});
 				}).catch(e => {
-						dispatch({type: TAG_ERROR, payload: "مشکلی رخ داد، دوباره تلاش کنید"});
+						dispatch(tagMessage("مشکلی رخ داد، دوباره تلاش کنید"));
 				});
 		}
 }
@@ -30,9 +32,9 @@ function getTagsRequest() {
 				dispatch({type: TAGS_REQUEST});
 		}
 }
-export function tagError(message) {
+export function tagMessage(message) {
 		return function(dispatch) {
-				dispatch({type: TAG_ERROR, payload: message});
+				dispatch({type: TAG_MESSAGE, payload: message});
 		}
 }
 export function newTag(name, level) {
@@ -45,12 +47,27 @@ export function newTag(name, level) {
 						}).then(() => {
 						dispatch({type: STORE_TAG});
 				}).catch(e => {
-						dispatch(tagError(JSON.parse(e.response.data.message).name[0]));
+						dispatch(tagMessage(JSON.parse(e.response.data.message).name[0]));
 				});
 		}
 }
 export function resetTagStatus() {
 		return function(dispatch) {
 				dispatch({type: RESET_TAG_STATUS});
+		}
+}
+export function uploadFile(file, id) {
+		return function(dispatch) {
+				dispatch({type: UPLOADING_TAG_PHOTO});
+				let data = new FormData();
+				data.append('id', id);
+				data.append('file', file);
+				getAuthInstance().post(`${ROOT_URL}/panel/tags/uploadPhoto`, data)
+						.then(()=> {
+								dispatch({type: TAG_PHOTO_UPLOADED});
+								dispatch(tagMessage("فایل آپلود شد"));
+						}).catch(e => {
+						dispatch(tagMessage("خطایی هنگام آپلود رخ داد"));
+				});
 		}
 }

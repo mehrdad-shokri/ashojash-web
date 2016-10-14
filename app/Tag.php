@@ -15,6 +15,6 @@ class Tag extends Model {
 
 	public function photo()
 	{
-		$this->morphMany("App\Photo", 'imageable');
+		return $this->morphMany('App\Photo', 'imageable');
 	}
 }

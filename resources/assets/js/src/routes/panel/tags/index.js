@@ -1,5 +1,5 @@
 module.exports = {
-		path: 'tag',
+		path: 'tags',
 		getIndexRoute(location, cb){
 				require.ensure([], ()=> {
 						const collections = require('../../../components/panel/tags/Tags');

@@ -9,4 +9,5 @@ interface TagRepository {
 
 	public function create($name, $level = 1);
 
+	public function findByIdOrFail($id);
 }

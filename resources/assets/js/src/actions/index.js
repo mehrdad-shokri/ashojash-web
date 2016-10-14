@@ -30,7 +30,8 @@ import {
 import {
 		getTags,
 		newTag,
-		tagError,
+		tagMessage,
+		uploadFile,
 		resetTagStatus
 } from './tag_actions';
 import {setIsModal, setModalType} from './modal_actions';
@@ -63,7 +64,8 @@ export {
 		refreshTokenIfNecessary,
 		getTags,
 		newTag,
-		tagError,
+		tagMessage,
+		uploadFile,
 		resetTagStatus
 };
 export {getCollections};

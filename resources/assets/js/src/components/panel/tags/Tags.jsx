@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {newTag, getTags, tagError, resetTagStatus} from '../../../actions'
+import {newTag, getTags, tagMessage, uploadFile, resetTagStatus} from '../../../actions'
 const progress = require('nprogress');
 import styles from '../../../../../sass/components/panel/tags/Tags.scss';
 const classNames = require('classnames/bind');
@@ -19,15 +19,13 @@ class Tags extends React.Component {
 
 		constructor(props) {
 				super(props);
-
 				this.state = {
 						height: '300px',
 						currentTag: "",
-						showSnackbar: false,
-						showedSnackbar: false
 				};
 				this.handleSubmit = this.handleSubmit.bind(this);
 				this.handleTagChange = this.handleTagChange.bind(this);
+				this.onDrop = this.onDrop.bind(this);
 		}
 
 		handleTagChange(e) {
@@ -35,7 +33,7 @@ class Tags extends React.Component {
 		}
 
 		handleSubmit(e) {
-				e.preventDefault()
+				e.preventDefault();
 				var tag = trim(this.state.currentTag);
 				var index = findIndex(this.props.tags, (item)=> {
 						return item.name == tag;
@@ -43,12 +41,12 @@ class Tags extends React.Component {
 				if (tag) {
 						if (index < 0) {
 								this.setState({currentTag: ""});
-								var tagObject = {name: tag, level: 1}
+								var tagObject = {name: tag, level: 1};
 								this.props.newTag(tag, 1);
 								this.props.tags.unshift(tagObject);
 						}
 						else {
-								this.props.tagError(TAG_EXISTS_ERROR);
+								this.props.tagMessage(TAG_EXISTS_ERROR);
 						}
 				}
 		}
@@ -61,10 +59,18 @@ class Tags extends React.Component {
 		}
 
 		componentDidUpdate() {
-				if (!this.props.isRequesting && (this.props.hasTags || this.props.hasError)) {
+				if (!this.props.isRequesting && (this.props.hasTags || this.props.hasMessage)) {
 						progress.done();
 				}
+				if(this.props.uploadedTagPhoto)
+				{
+						this.props.getTags();
+				}
 		}
+
+		onDrop(files, id) {
+				this.props.uploadFile(files[0], id);
+		};
 
 		render() {
 				return (
@@ -97,16 +103,21 @@ class Tags extends React.Component {
 										</TableHeader>
 										<TableBody displayRowCheckbox={false}>
 												{
-														this.props.tags ? this.props.tags.map((item, index)=> {
+														this.props.tags ? this.props.tags.map((item)=> {
 																return (
-																		<TableRow key={index} selectable={false}>
+																		<TableRow key={item.id} selectable={false}>
 																				<TableRowColumn style={{fontSize: 15}}>{item.name}</TableRowColumn>
 																				<TableRowColumn style={{fontSize: 15}}>
-																						<DropZone multiple={false} accept="image/*" className={cx("dropzone")}>
-																								<img
-
+																						<DropZone multiple={false}
+																											accept="image/*"
+																											className={cx("dropzone")}
+																											onDrop={(files)=>this.onDrop(files, item.id)}
+																											maxSize={5000000}>
+																								{item.photo ? <img
+																										src={item.photo.url}
+																										alt=""/> : <img
 																										src={require('../../../../../statics/img/components/panel/tags/upload.png')}
-																										alt=""/>
+																										alt=""/>}
 																						</DropZone>
 																				</TableRowColumn>
 																				<TableRowColumn style={{fontSize: 15}}>{item.level}</TableRowColumn>
@@ -118,8 +129,8 @@ class Tags extends React.Component {
 										</TableBody>
 								</Table>
 								<Snackbar
-										open={this.props.createdTag || this.props.hasError}
-										message={this.props.errorMessage ? this.props.errorMessage : "تگ ساخته شد"}
+										open={this.props.createdTag || this.props.hasMessage || this.props.uploadedTagPhoto}
+										message={this.props.message ? this.props.message : "تگ ساخته شد"}
 										autoHideDuration={3000}
 										onRequestClose={()=> {
 												this.props.resetTagStatus();
@@ -133,7 +144,8 @@ function mapDispatchToProps(dispatch) {
 		return bindActionCreators({
 				getTags: getTags,
 				newTag: newTag,
-				tagError: tagError,
+				tagMessage: tagMessage,
+				uploadFile: uploadFile,
 				resetTagStatus: resetTagStatus
 		}, dispatch);
 }
@@ -143,10 +155,12 @@ function mapStateToProps(state) {
 				isRequesting: state.tags.isRequesting,
 				tags: state.tags.tags,
 				hasTags: state.tags.hasTags,
-				hasError: state.tags.hasError,
-				errorMessage: state.tags.errorMessage,
+				hasMessage: state.tags.hasMessage,
+				message: state.tags.message,
 				createdTag: state.tags.createdTag,
-				isCreatingTag: state.tags.isCreatingTag
+				isCreatingTag: state.tags.isCreatingTag,
+				uploadedTagPhoto: state.tags.uploadedTagPhoto,
+				uploadingTagPhoto: state.tags.uploadingTagPhoto
 		};
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Tags);

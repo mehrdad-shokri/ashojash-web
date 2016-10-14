@@ -13,6 +13,7 @@ use app\Repository\CityRepository;
 use app\Repository\CollectionRepository;
 use app\Repository\TagRepository;
 use app\Repository\VenueRepository;
+use App\Tag;
 use App\Venue;
 use Carbon\Carbon;
 use Dingo\Api\Routing\Adapter\Laravel;
@@ -20,6 +21,7 @@ use FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Vinkla\Hashids\Facades\Hashids;
 
 class TagsController extends BaseController {
 
@@ -45,7 +47,7 @@ class TagsController extends BaseController {
 			'name' => 'required|string|unique:tags',
 			'level' => 'integer',
 		];
-		$validator = app('validator')->make($request->all(), $rules, ['name.unique' => $request->get('name')." قبلا انتخاب شده"]);
+		$validator = app('validator')->make($request->all(), $rules, ['name.unique' => $request->get('name') . " قبلا انتخاب شده"]);
 		if ($validator->fails())
 		{
 			$this->response->errorBadRequest($this->errorResponse($validator));
@@ -57,15 +59,18 @@ class TagsController extends BaseController {
 	public function addPhoto(Request $request)
 	{
 		$rules = [
-			'slug' => 'required',
+			'id' => 'required|string',
 			'file' => 'required|image|max:5000',
 		];
 		$validator = app('validator')->make($request->all(), $rules);
-		if ($validator->fails()) {
+		if ($validator->fails())
+		{
 			$this->response->errorBadRequest($this->errorResponse($validator));
 		}
-		$collection = $this->tagRepository->findBySlugOrFail($request->get('slug'));
-		FileUploader::uploadFile($collection, $request->file('file'), Auth::user(), true);
+		Log::info($request->get('id'));
+		Log::info(Hashids::decode($request->get('id')));
+		$tag = $this->tagRepository->findByIdOrFail(Hashids::decode($request->get('id'))[0]);
+		FileUploader::uploadFile($tag, $request->file('file'), Auth::user(), true);
 		$this->response->created();
 	}
 }
