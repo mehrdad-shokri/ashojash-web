@@ -285,3 +285,58 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 		$api->post('panel/tags/uploadPhoto', $backendControllerNameSpace . "TagsController@addPhoto");
 	});
 });
+
+$api = app('api.router');
+$api->version('v2', ['middleware' => array('api.throttle')], function ($api)
+{
+	$mobileControllerNameSpace = 'App\Http\Controllers\Api\V2\Mobile\\';
+	$api->get('city/all', $mobileControllerNameSpace . "CitiesController@all");
+	$api->get('venue/nearby/lat/{lat}/lng/{lng}', $mobileControllerNameSpace . 'CitiesController@nearbyVenues');
+	$api->get("venue/search/city/{citySlug}", $mobileControllerNameSpace . "VenuesController@search");
+	$api->get("venue/{venueSlug}", $mobileControllerNameSpace . "VenuesController@index");
+	$api->get("venue/{venueSlug}/reviews", $mobileControllerNameSpace . "VenuesController@reviews");
+	$api->get("venue/{venueSlug}/menus", $mobileControllerNameSpace . "VenuesController@menus");
+	$api->get("venue/{venueSlug}/photos", $mobileControllerNameSpace . "VenuesController@photos");
+	$api->get("city/{citySlug}/collections", $mobileControllerNameSpace . "CollectionsController@all");
+	$api->get("city/{citySlug}/collection/{collectionSlug}", $mobileControllerNameSpace . "CollectionsController@index");
+	$api->post("auth/register", $mobileControllerNameSpace . "AuthController@postRegister");
+	$api->post("auth/login", $mobileControllerNameSpace . "AuthController@postLogin");
+	$api->post("auth/google", $mobileControllerNameSpace . "AuthController@handleApiProviderCallback");
+	$api->post("auth/refreshToken", $mobileControllerNameSpace . "AuthController@refreshToken");
+	$api->group(['middleware' => ['jwt.auth']], function () use ($api, $mobileControllerNameSpace)
+	{
+		$api->post("user/review/add", $mobileControllerNameSpace . "UsersController@addReview");
+		$api->post("user/addVenuePhoto/{venueSlug}", $mobileControllerNameSpace . "UsersController@addVenuePhoto");
+	});
+
+	$api->group(['prefix' => 'admin'], function () use ($api)
+	{
+		$backendControllerNameSpace = 'App\Http\Controllers\Api\V2\Backend\\';
+		$api->post("auth/login", $backendControllerNameSpace . "AuthController@postLogin");
+		$api->group(['middleware' => ['jwt.auth', 'permission.admin']], function () use ($api, $backendControllerNameSpace)
+		{
+			$api->post('auth/refreshToken', $backendControllerNameSpace . "AuthController@refreshToken");
+			$api->post("auth/permissions", $backendControllerNameSpace . "AuthController@getPermissions");
+
+			$api->group(['middleware' => ['jwt.auth', 'permission.manage-collection']], function () use ($api, $backendControllerNameSpace)
+			{
+				$api->post('panel/collections', $backendControllerNameSpace . "CollectionsController@all");
+				$api->post('panel/collections/store', $backendControllerNameSpace . "CollectionsController@store");
+				$api->get('panel/collections/city/all', $backendControllerNameSpace . "CollectionsController@allCities");
+				$api->post('panel/collections/uploadPhoto', $backendControllerNameSpace . "CollectionsController@addPhoto");
+				$api->post('panel/collections/venue/search', $backendControllerNameSpace . "CollectionsController@searchVenues");
+
+				$api->post('panel/tags', $backendControllerNameSpace . "TagsController@all");
+				$api->post('panel/tags/store', $backendControllerNameSpace . "TagsController@store");
+				$api->post('panel/tags/uploadPhoto', $backendControllerNameSpace . "TagsController@addPhoto");
+			});
+
+		});
+	});
+});
+$api->version('v3', ['middleware' => array('api.throttle')], function ($api)
+{
+	$mobileControllerNameSpace = 'App\Http\Controllers\Api\V3\Mobile\\';
+	$api->post("venue/search/nearby", $mobileControllerNameSpace . "SearchesController@nearby");
+	$api->post("venue/search", $mobileControllerNameSpace . "SearchesController@streetSearch");
+});
