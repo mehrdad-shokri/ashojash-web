@@ -11,8 +11,9 @@ class VenueTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Venue::class, 50)->create()->each(function ($u) {
+        factory(App\Venue::class, 50)->create()->each(function($u) {
             $u->location()->save(factory(App\Location::class)->make());
         });
+
     }
 }
