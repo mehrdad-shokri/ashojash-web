@@ -60,7 +60,6 @@ class Kernel extends HttpKernel
         'manage-user' => \App\Http\Middleware\AuthorizeManageUser::class,
         'manage-city' => \App\Http\Middleware\AuthorizeManageCity::class,
         'manage-venue' => \App\Http\Middleware\AuthorizeManageVenue::class,
-        'manage-tag' => \App\Http\Middleware\AuthorizeManageTag::class,
         'manage-role' => \App\Http\Middleware\AuthorizeManageRole::class,
         'manage-cuisine' => \App\Http\Middleware\AuthorizeManageCuisine::class,
         'manage-feature' => \App\Http\Middleware\AuthorizeManageFeature::class,
@@ -68,5 +67,6 @@ class Kernel extends HttpKernel
         'jwt.refresh' => \Tymon\JWTAuth\Http\Middleware\RefreshToken::class,
         'permission.admin' => \App\Http\Middleware\AuthorizeAdmin::class,
         'permission.manage-collection' => \App\Http\Middleware\AuthorizeManageCollection::class,
+        'permission.manage-tag' => \App\Http\Middleware\AuthorizeManageTag::class,
     ];
 }

@@ -78,7 +78,6 @@ exports.reactHot = function(path) {
 				},
 				plugins: [
 						new webpack.HotModuleReplacementPlugin()
-
 				]
 		}
 }
