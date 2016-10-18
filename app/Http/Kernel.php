@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'permission.admin' => \App\Http\Middleware\AuthorizeAdmin::class,
         'permission.manage-collection' => \App\Http\Middleware\AuthorizeManageCollection::class,
         'permission.manage-tag' => \App\Http\Middleware\AuthorizeManageTag::class,
+        'permission.manage-venue' => \App\Http\Middleware\AuthorizeManageVenue::class,
     ];
 }

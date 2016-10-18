@@ -216,7 +216,7 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::get('payment/initialize/{venueSlug}', 'PaymentsController@initialize');
 	Route::get('payment/handle-callback', 'PaymentsController@handleCallback');
 });
-Route::get('admin/{path?}','Admin\AdminController@index')->where('path', '.*');
+Route::get('admin/{path?}', 'Admin\AdminController@index')->where('path', '.*');
 
 //deprecated
 Route::group(['prefix' => 'api/v1', 'namespace' => 'Api'], function ()
@@ -316,6 +316,10 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 				$api->post('panel/tags', $backendControllerNameSpace . "TagsController@all");
 				$api->post('panel/tags/store', $backendControllerNameSpace . "TagsController@store");
 				$api->post('panel/tags/uploadPhoto', $backendControllerNameSpace . "TagsController@addPhoto");
+			});
+			$api->group(['middleware' => 'permission.manage-venue'], function () use ($api, $backendControllerNameSpace)
+			{
+				$api->post('panel/venues', $backendControllerNameSpace . 'VenuesController@all');
 			});
 		});
 	});
