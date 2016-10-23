@@ -1,7 +1,10 @@
 import {
 		VENUE_MESSAGE,
 		VENUE_REQUEST,
-		VENUE_RESPONSE
+		VENUE_RESPONSE,
+		VENUE_TAGS_RESPONSE,
+		IS_LOADING_VENUE_TAGS,
+		VENUE_TAGS_SEARCH_RESPONSE
 } from '../actions/types';
 import {createReducer} from '../utils/utils';
 const initialState = {
@@ -10,6 +13,10 @@ const initialState = {
 		hasVenues: false,
 		hasMessage: false,
 		message: null,
+		venueTags: null,
+		hasVenueTags: false,
+		isLoadingVenueTags: false,
+		venueTagsSearch: null
 };
 
 export default createReducer(initialState, {
@@ -27,4 +34,23 @@ export default createReducer(initialState, {
 						message: payload,
 				}
 		},
+		[VENUE_TAGS_RESPONSE]: (state, payload)=> {
+				return {
+						...state,
+						isRequesting: false,
+						venueTags: payload
+				}
+		},
+		[IS_LOADING_VENUE_TAGS]: (state, payload)=> {
+				return {
+						...state,
+						isLoadingVenueTags: payload
+				}
+		},
+		[VENUE_TAGS_SEARCH_RESPONSE]: (state, payload)=> {
+				return {
+						...state,
+						venueTagsSearch: payload
+				}
+		}
 });

@@ -1,0 +1,14 @@
+.tableRow {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.link {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  &:hover {
+    color: #333;
+  }
+}

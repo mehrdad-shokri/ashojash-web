@@ -320,6 +320,8 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 			$api->group(['middleware' => 'permission.manage-venue'], function () use ($api, $backendControllerNameSpace)
 			{
 				$api->post('panel/venues', $backendControllerNameSpace . 'VenuesController@all');
+				$api->post('panel/venues/{slug}/tags', $backendControllerNameSpace . 'VenuesController@tags');
+				$api->post('panel/tags/search', $backendControllerNameSpace . "TagsController@search");
 			});
 		});
 	});

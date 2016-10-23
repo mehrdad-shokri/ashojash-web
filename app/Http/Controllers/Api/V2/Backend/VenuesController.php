@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V2\Backend;
 
 use App\Api\Transformer\Backend\CollectionTransformer;
 use App\Api\Transformer\Backend\TagTransformer;
+use App\Api\Transformer\Backend\VenueTagTransformer;
 use App\Api\Transformer\CityTransformer;
 use App\Api\Transformer\VenueTransformer;
 use App\City;
@@ -62,5 +63,11 @@ class VenuesController extends BaseController {
 			$venues = $this->venueRepository->all();
 		}
 		return $this->response->collection($venues, new VenueTransformer());
+	}
+
+	public function tags(Request $request)
+	{
+		$venue = $this->venueRepository->findBySlugOrFail($request->route('slug'));
+		return $this->response->collection($venue->tags, new VenueTagTransformer());
 	}
 }

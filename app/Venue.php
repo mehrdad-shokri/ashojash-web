@@ -97,7 +97,7 @@ class Venue extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Tag')->withPivot(['score']);
+        return $this->belongsToMany('App\Tag')->withPivot(['weight']);
     }
 
     public function hasImgId()

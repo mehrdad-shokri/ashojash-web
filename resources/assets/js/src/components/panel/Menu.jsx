@@ -53,7 +53,7 @@ class Burger extends Component {
 						<Menu styles={styles} right pageWrapId={this.props.pageWrapId}
 									outerContainerId={this.props.outerContainerId} className="panelDrawer">
 								{_.indexOf(this.props.permissions, 'manage-collection') > 0 ?
-										<RadiumLink className={cx('menuItem')} to="/admin/panel/collection"
+										<RadiumLink className={cx('menuItem')} to="/admin/panel/collections"
 																activeClassName={cx('activeMenuItem')}>
 												<i className={classNames('md')} style={{fontSize: 28}}>collections</i>
 												<span style={{verticalAlign: 'top', fontSize: 22}}>کلکسیون</span></RadiumLink> : <span></span>}

@@ -5,5 +5,12 @@ module.exports = {
 						const venues = require('../../../components/panel/venues/Venues');
 						cb(null, {component: venues});
 				})
+		},
+		getChildRoutes(location, cb){
+				require.ensure([], ()=> {
+						cb(null, [
+								require('./addTag')
+						])
+				})
 		}
 };

@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {newTag, getTags, tagMessage, uploadFile, resetTagStatus} from '../../../actions'
@@ -61,8 +61,7 @@ class Tags extends Component {
 				if (!this.props.isRequesting && (this.props.hasTags || this.props.hasMessage)) {
 						progress.done();
 				}
-				if(this.props.uploadedTagPhoto)
-				{
+				if (this.props.uploadedTagPhoto) {
 						this.props.getTags();
 				}
 		}
@@ -141,11 +140,11 @@ class Tags extends Component {
 }
 function mapDispatchToProps(dispatch) {
 		return bindActionCreators({
-				getTags: getTags,
-				newTag: newTag,
-				tagMessage: tagMessage,
-				uploadFile: uploadFile,
-				resetTagStatus: resetTagStatus
+				getTags,
+				newTag,
+				tagMessage,
+				uploadFile,
+				resetTagStatus
 		}, dispatch);
 }
 

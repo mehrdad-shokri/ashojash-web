@@ -21,4 +21,9 @@ class DbTagRepository implements TagRepository {
 		return Tag::findOrFail($id);
 	}
 
+	public function search($query)
+	{
+		return Tag::search($query);
+	}
+
 }
