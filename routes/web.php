@@ -250,9 +250,10 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 	$api->get('city/all', $mobileControllerNameSpace . "CitiesController@all");
 	$api->get('venue/nearby/lat/{lat}/lng/{lng}', $mobileControllerNameSpace . 'CitiesController@nearbyVenues');
 	$api->get("venue/search/city/{citySlug}", $mobileControllerNameSpace . "VenuesController@search");
-//    $api->post("venue/suggest", $mobileControllerNameSpace . "SearchesController@suggestVenues");
+
+    $api->post("venue/suggest", $mobileControllerNameSpace . "SearchesController@suggestVenues");
+	$api->post("venue/search", $mobileControllerNameSpace . "SearchesController@searchVenues");
 	$api->post("location/suggest", $mobileControllerNameSpace . "SearchesController@suggestStreets");
-	$api->post("location/search", $mobileControllerNameSpace . "SearchesController@searchVenues");
 //    $api->post("street/search", $mobileControllerNameSpace . "SearchesController@searchStreets");
 	$api->get("venue/{venueSlug}", $mobileControllerNameSpace . "VenuesController@index");
 	$api->get("venue/{venueSlug}/reviews", $mobileControllerNameSpace . "VenuesController@reviews");
@@ -321,7 +322,8 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 			{
 				$api->post('panel/venues', $backendControllerNameSpace . 'VenuesController@all');
 				$api->post('panel/venues/{slug}/tags', $backendControllerNameSpace . 'VenuesController@tags');
-				$api->post('panel/tags/search', $backendControllerNameSpace . "TagsController@search");
+				$api->post('panel/venues/{slug}/tags/search', $backendControllerNameSpace . "VenuesController@searchTag");
+				$api->post('panel/venues/{slug}/tags/add', $backendControllerNameSpace . "VenuesController@addTag");
 			});
 		});
 	});

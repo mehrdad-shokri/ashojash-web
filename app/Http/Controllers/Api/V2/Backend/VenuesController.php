@@ -35,11 +35,22 @@ class VenuesController extends BaseController {
 	 * @var CityRepository
 	 */
 	private $cityRepository;
+	/**
+	 * @var TagRepository
+	 */
+	private $tagRepository;
 
-	public function __construct(VenueRepository $venueRepository, CityRepository $cityRepository)
+	/**
+	 * VenuesController constructor.
+	 * @param VenueRepository $venueRepository
+	 * @param CityRepository $cityRepository
+	 * @param TagRepository $tagRepository
+	 */
+	public function __construct(VenueRepository $venueRepository, CityRepository $cityRepository, TagRepository $tagRepository)
 	{
 		$this->venueRepository = $venueRepository;
 		$this->cityRepository = $cityRepository;
+		$this->tagRepository = $tagRepository;
 	}
 
 	public function all(Request $request)
@@ -68,6 +79,38 @@ class VenuesController extends BaseController {
 	public function tags(Request $request)
 	{
 		$venue = $this->venueRepository->findBySlugOrFail($request->route('slug'));
-		return $this->response->collection($venue->tags, new VenueTagTransformer());
+//		dd($venue->tags->first());
+		return $this->response->collection($venue->tags()->orderBy('tag_venue.created_at','desc')->get(), new VenueTagTransformer());
+	}
+
+	public function searchTag(Request $request)
+	{
+		$rules = [
+			'query' => 'required|string',
+		];
+		$validator = app('validator')->make($request->all(), $rules);
+		if ($validator->fails())
+		{
+			$this->response->errorBadRequest($this->errorResponse($validator));
+		}
+		$venue = $this->venueRepository->findBySlugOrFail($request->route('slug'));
+		return $this->response->collection($this->venueRepository->searchTag($venue, $request->get('query')), new TagTransformer());
+	}
+
+	public function addTag(Request $request)
+	{
+		$rules = [
+			'name' => 'string|required',
+			'weight' => 'required|integer|min:1|max:100'
+		];
+		$validator = app('validator')->make($request->all(), $rules);
+		if ($validator->fails())
+		{
+			$this->response->errorBadRequest($this->errorResponse($validator));
+		}
+		$tag = $this->tagRepository->findByNameOrFail($request->get('name'));
+		$venue = $this->venueRepository->findBySlugOrFail($request->route('slug'));
+		$this->tagRepository->addTag($venue, $request->get('weight'), $tag);
+		return $this->response->created();
 	}
 }

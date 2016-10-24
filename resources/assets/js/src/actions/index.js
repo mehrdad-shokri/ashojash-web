@@ -38,7 +38,8 @@ import {
 		getVenues,
 		venueMessage,
 		getVenueTags,
-		searchTags
+		searchTags,
+		addTag
 }from './venue_actions'
 import {setIsModal, setModalType} from './modal_actions';
 export {
@@ -76,6 +77,7 @@ export {
 		venueMessage,
 		getVenues,
 		getVenueTags,
-		searchTags
+		searchTags,
+		addTag
 };
 export {getCollections};

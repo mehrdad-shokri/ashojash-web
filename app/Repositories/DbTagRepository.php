@@ -3,6 +3,7 @@
 namespace app\Repository;
 
 use App\Tag;
+use App\Venue;
 
 class DbTagRepository implements TagRepository {
 
@@ -21,9 +22,19 @@ class DbTagRepository implements TagRepository {
 		return Tag::findOrFail($id);
 	}
 
+	public function findByNameOrFail($name)
+	{
+		return Tag::where('name', $name)->firstOrFail();
+	}
+
 	public function search($query)
 	{
-		return Tag::search($query);
+		return Tag::search($query)->get();
+	}
+
+	public function addTag(Venue $venue, $weight, Tag $tag)
+	{
+		$venue->tags()->sync([$tag->getKey() => ['weight' => $weight]], false);
 	}
 
 }

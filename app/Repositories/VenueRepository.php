@@ -44,4 +44,6 @@ interface VenueRepository {
 	public function venuePhotosCount(Venue $venue);
 
 	public function venueMenusCount(Venue $venue);
+
+	public function searchTag(Venue $venue, $query, $filter = true);
 }

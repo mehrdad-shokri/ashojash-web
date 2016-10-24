@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 const progress = require('nprogress');
-import {getVenueTags} from '../../../../actions'
+import {getVenueTags, addTag} from '../../../../actions'
 import {
 		Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
 }    from 'material-ui/Table';
@@ -29,7 +29,9 @@ class Tags extends Component {
 		render() {
 				return (
 						<div>
-								<AddTag/>
+								<AddTag slug={this.props.slug} handleFormSubmit={(name, weight)=> {
+										this.props.addTag(name, weight, this.props.slug);
+								}}/>
 								<Table
 										height={this.state.height}
 										fixedHeader={true}>
@@ -74,7 +76,8 @@ class Tags extends Component {
 
 function mapDispatchToProps(dispatch) {
 		return bindActionCreators({
-				getVenueTags: getVenueTags
+				getVenueTags,
+				addTag
 		}, dispatch);
 }
 

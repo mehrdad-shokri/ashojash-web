@@ -42,7 +42,6 @@ export function getVenueTags(slug) {
 								return JSON.parse(data);
 						}
 				}).then(response => {
-						console.log(response.data);
 						dispatch({type: VENUE_TAGS_RESPONSE, payload: response.data});
 				}).catch(e => {
 						dispatch(venueMessage("مشکلی رخ داد، دوباره تلاش کنید"));
@@ -54,10 +53,10 @@ export function setIsLoadingTags(isLoading) {
 				dispatch({type: IS_LOADING_VENUE_TAGS, payload: isLoading});
 		}
 }
-export function searchTags(query) {
+export function searchTags(query, slug) {
 		return function(dispatch) {
 				dispatch(setIsLoadingTags(true));
-				getAuthInstance().post(`${ROOT_URL}/panel/tags/search`, {query}, {
+				getAuthInstance().post(`${ROOT_URL}/panel/venues/${slug}/tags/search`, {query}, {
 						transformResponse: function(data) {
 								var json = JSON.parse(data);
 								var tags = json.map((tag)=> {
@@ -70,6 +69,16 @@ export function searchTags(query) {
 				}).then(response => {
 						dispatch({type: VENUE_TAGS_SEARCH_RESPONSE, payload: response.data});
 						dispatch(setIsLoadingTags(false));
+				});
+		}
+}
+export function addTag(name, weight, slug) {
+		return function(dispatch) {
+				dispatch(getVenuesRequest());
+				getAuthInstance().post(`${ROOT_URL}/panel/venues/${slug}/tags/add`, {name, weight}).then(response => {
+						dispatch(getVenueTags(slug));
+				}).catch(e => {
+						dispatch(venueMessage("مشکلی رخ داد، دوباره تلاش کنید"));
 				});
 		}
 }

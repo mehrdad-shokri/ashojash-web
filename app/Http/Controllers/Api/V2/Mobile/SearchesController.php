@@ -43,6 +43,7 @@ class SearchesController extends BaseController
         if ($validator->fails())
             $this->response->errorBadRequest("Validation failed.");
         $userCity = $this->cityRepository->getCity($lat, $lng);
+		dd($userCity);
         $streetIds = $this->repository->searchStreet($request->get('name'), $userCity)->pluck('OGR_FID');
         $venueIds = collect();
         foreach ($streetIds as $id) {

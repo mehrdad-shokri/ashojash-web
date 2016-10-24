@@ -3,6 +3,7 @@
 
 use App\City;
 use App\Location;
+use App\Tag;
 use App\Venue;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -38,7 +39,7 @@ class DbVenueRepository implements VenueRepository {
 
 	public function create($name, $phone, $status = 0)
 	{
-		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status,'starts_at'=>Carbon::now(),'valid_until'=>Carbon::now()->subMinute(),'score'=>0,'cost'=>0,'type'=>0]);
+		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status, 'starts_at' => Carbon::now(), 'valid_until' => Carbon::now()->subMinute(), 'score' => 0, 'cost' => 0, 'type' => 0]);
 	}
 
 	public function whereCity($slug, City $city)
@@ -236,6 +237,14 @@ class DbVenueRepository implements VenueRepository {
 	public function venuePhotosCount(Venue $venue)
 	{
 		return $venue->photos()->count();
+	}
+
+	public function searchTag(Venue $venue, $query, $filter = true)
+	{
+		$searchedTags = Tag::search($query)->get();
+		if ($filter)
+			return Tag::whereNotIn('id', $venue->tags()->getRelatedIds())->whereIn('id', $searchedTags->pluck('id'))->get();
+		return $searchedTags;
 	}
 
 }

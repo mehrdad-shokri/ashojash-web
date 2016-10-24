@@ -9,7 +9,7 @@ import {bindActionCreators} from 'redux';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Chip from 'material-ui/Chip';
-import styles from '../../../../../../sass/components/panel/collections/VenueSelect.scss';
+import styles from '../../../../../../sass/components/panel/venues/TagSelect.scss';
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
 class VenueOption extends Component {
@@ -41,7 +41,6 @@ class VenueOption extends Component {
 								 onMouseEnter={this.handleMouseEnter}
 								 onClick={this.handleClick}
 								 onMouseMove={this.handleMouseMove}
-								 id={this.props.option.slug}
 								 title={this.props.option.name}>
 								<div className={cx('name')}>{this.props.option.name}</div>
 						</div>
@@ -67,7 +66,7 @@ class TagValue extends Component {
 				});
 				const styles = {
 						chip: {
-								margin: 4,
+								margin: 2,
 								direction: 'ltr',
 								display: 'inline-flex'
 						},
@@ -80,8 +79,6 @@ class TagValue extends Component {
 						<MuiThemeProvider muiTheme={theme}>
 								<Chip
 										style={styles.chip}
-										onRequestDelete={()=>this.props.handleDelete(this.props.value.slug)}
-										id={this.props.value.slug}
 								>
 										{this.props.value.name}
 								</Chip>
@@ -97,6 +94,7 @@ class TagSelect extends Component {
 		}
 
 		setValue(value) {
+				console.log('onchange');
 				this.setState({value});
 		}
 
@@ -110,7 +108,7 @@ class TagSelect extends Component {
 		render() {
 				let onInputChange = value=> {
 						if (value.length > 0) {
-								this.props.searchTags(value);
+								this.props.searchTags(value,this.props.slug);
 						}
 						return value;
 				};
@@ -124,19 +122,14 @@ class TagSelect extends Component {
 						})
 				};
 				let handleDelete = () => {
-						this.setState({value:null})
-						/*let deleted = filter(this.props.selectedCollectionVenues, (object)=> {
-								return object.slug != slug;
-						});
-						this.props.setSelectedCollectionVenues(deleted);*/
+						this.setState({value: null})
 				};
 
 				let valueWrapper = function OptionWrapper(props) {
 						return <TagValue {...props} option={props.value} handleDelete={handleDelete}/>;
 				};
-
 				return (
-						<div className="section">
+						<div className={cx('section')}>
 								<Select
 										arrowRenderer={this.arrowRenderer}
 										isLoading={this.props.isLoading}
@@ -150,6 +143,8 @@ class TagSelect extends Component {
 										value={this.state.value}
 										optionComponent={VenueOption}
 										valueComponent={valueWrapper}
+										{...this.props.input}
+										onBlur={()=>{this.props.input.onBlur(this.props.input.value)}}
 								/>
 								{this.props.showError && this.props.meta.invalid ?
 										<div className={cx('error')}>{this.props.meta.error}</div> : ''}
@@ -166,9 +161,7 @@ TagSelect.propTypes = {
 function mapStateToProps(state) {
 		return {
 				venueTagsSearch: state.venues.venueTagsSearch,
-				selectedCollectionVenues: state.collections.selectedCollectionVenues,
 				isLoading: state.venues.isLoadingVenueTags,
-				collectionCity: state.collections.collectionCity
 		};
 }
 function mapDispatchToProps(dispatch) {
