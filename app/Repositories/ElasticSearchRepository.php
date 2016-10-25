@@ -11,11 +11,11 @@ use Illuminate\Support\Collection;
 
 class ElasticSearchRepository implements SearchRepository {
 
-	public function suggestVenue($name, City $city)
+	public function suggestVenue($name)
 	{
 		$client = ClientBuilder::create()->build();
-		$venueIds = Location::where('city_id', $city->getKey())
-			->pluck('venue_id');
+		/*	$venueIds = Location::where('city_id', $city->getKey())
+				->pluck('venue_id');*/
 		$params = [
 			'index' => 'ashojash',
 			'type' => 'venues',
@@ -23,9 +23,30 @@ class ElasticSearchRepository implements SearchRepository {
 				'query' =>
 					[
 						"match" => [
-							'name' => $name
+							'name' => $name,
+							'boost' => 100
 						]
-					]
+					],
+				'nested' => [
+					'path' => 'tags',
+					'query' => [
+						'function_score' => [
+							'functions' => [
+								'field_value_factor' => [
+									"field" => "tags.weight"
+								]
+							],
+							'query' => [
+								'match' => [
+									'tags.name' => $name
+								]
+							],
+							'boost_mode' => 'replace',
+							'score_mode' => 'max'
+						]
+					],
+					'score_mode' => 'max'
+				]
 			]
 		];
 		$results = $client->search($params);
@@ -37,7 +58,7 @@ class ElasticSearchRepository implements SearchRepository {
 		return $models;
 	}
 
-	public function searchVenue($name, City $city)
+	public function searchVenue($name)
 	{
 		return Venue::search($name)->get();
 	}
