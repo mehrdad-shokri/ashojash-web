@@ -7,9 +7,9 @@ use App\City;
 
 interface SearchRepository
 {
-    public function suggestVenue($name, City $city);
+    public function suggestVenue($name);
 
-    public function searchVenue($name, City $city);
+    public function searchVenue($name);
 
     public function suggestStreet($name, City $city);
 

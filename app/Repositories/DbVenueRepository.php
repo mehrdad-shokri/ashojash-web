@@ -9,9 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use InvalidArgumentException;
-use stdClass;
 
 class DbVenueRepository implements VenueRepository {
 
@@ -125,32 +122,17 @@ class DbVenueRepository implements VenueRepository {
 	 */
 	public function nearby($userLat, $userLng, $distance = 3, $limit = 30)
 	{
-//		MAX search distance is 6KM
 		if ($distance > 6 || is_null($distance)) $distance = 3;
 		if ($limit > 40 || is_null($limit)) $limit = 30;
 		$venueIds = DB::table('locations')
-			->select(array('lat', 'lng', 'id'))
+			->select(DB::raw("ST_DISTANCE_SPHERE(POINT(lng,lat),POINT($userLng,$userLat)) as distance , lat , lng , id,venue_id"))
 			->from('locations')
-			->havingRaw("lat BETWEEN $userLat - ($distance / 111.045) AND $userLat + ($distance/111.045)")
-			->havingRaw("lng BETWEEN $userLng - ($distance / (111.045 * COS(RADIANS($userLat)))) AND $userLng + ($distance / (111.045 * COS(RADIANS($userLat))))")
-			->pluck('id');
-		$locations = Location::select(DB::raw("* , 111.045* DEGREES(ACOS(COS(RADIANS($userLat))
-                 * COS(RADIANS(lat))
-                 * COS(RADIANS($userLng) - RADIANS(lng))
-                 + SIN(RADIANS($userLat))
-                 * SIN(RADIANS(lat)))) AS distance"))
-			->whereIn("id", $venueIds)
-			->havingRaw('distance <' . $distance)
+			->havingRaw("distance < $distance*1000")
 			->orderBy('distance')
-			->take($limit)
-			->get();
-		$venues = collect();
-		foreach ($locations as $location)
-		{
-			$venue = $location->venue;
-			$venue->location = $location;
-			$venues->push($venue);
-		}
+			->pluck('venue_id')
+			->all();
+		$idsImploded = implode(',', $venueIds);
+		$venues = Venue::whereIn('id', $venueIds)->orderByRaw("field(id,{$idsImploded})", $venueIds)->get();
 		return $venues;
 	}
 
@@ -246,5 +228,17 @@ class DbVenueRepository implements VenueRepository {
 			return Tag::whereNotIn('id', $venue->tags()->getRelatedIds())->whereIn('id', $searchedTags->pluck('id'))->get();
 		return $searchedTags;
 	}
+
+	public function findByIds($ids)
+	{
+		$idsImploded = implode(',', $ids);
+		return Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
+	}
+
+	public function venuesNearStreet($streetId)
+	{
+		return DB::table(DB::raw("locations,streets"))->select(DB::raw("ST_DISTANCE(geolocation,shape)*100000 as distance , venue_id"))->where('OGR_FID', $streetId)->orderBy('distance', 'asc')->havingRaw("distance < 200")->get();
+	}
+
 
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\v2\BaseController;
 use App\Location;
 use app\Repository\CityRepository;
 use app\Repository\SearchRepository;
+use app\Repository\VenueRepository;
 use App\Tag;
 use App\Venue;
 use Hamcrest\Collection\IsTraversableWithSizeTest;
@@ -25,11 +26,22 @@ class SearchesController extends BaseController {
 	 * @var CityRepository
 	 */
 	private $cityRepository;
+	/**
+	 * @var VenueRepository
+	 */
+	private $venueRepository;
 
-	public function __construct(SearchRepository $repository, CityRepository $cityRepository)
+	/**
+	 * SearchesController constructor.
+	 * @param SearchRepository $repository
+	 * @param CityRepository $cityRepository
+	 * @param VenueRepository $venueRepository
+	 */
+	public function __construct(SearchRepository $repository, CityRepository $cityRepository, VenueRepository $venueRepository)
 	{
 		$this->repository = $repository;
 		$this->cityRepository = $cityRepository;
+		$this->venueRepository = $venueRepository;
 	}
 
 	public function searchVenues(Request $request)
@@ -42,59 +54,70 @@ class SearchesController extends BaseController {
 			'streetName' => 'string',
 			'query' => 'string'
 		];
-		$validator = app('validator')->make(compact('lat', 'lng'), $rules);
+		$validator = app('validator')->make($request->all(), $rules);
 		if ($validator->fails())
 			$this->response->errorBadRequest("Validation failed.");
 		$userCity = $this->cityRepository->getCity($lat, $lng);
-		if ($request->get('streetName'))
+		if (is_null($userCity))
+		{
+			return $this->response->errorBadRequest('We are not in your city yet.');
+		}
+		$queryVenueIds = collect();
+		$streetVenueIds = collect();
+		$nearbyVenueIds = $this->venueRepository->nearby($lat, $lng, 1, 40)->pluck('id');
+		$haveQuery = $request->get('query');
+		$haveStreetName = $request->get('streetName');
+		if ($haveQuery)
+		{
+			$queryVenueIds = $this->repository->searchVenue($request->get('query'), $userCity)->pluck('id');
+		}
+		if ($haveStreetName)
 		{
 			$streetIds = $this->repository->searchStreet($request->get('streetName'), $userCity)->pluck('OGR_FID');
-			$streetVenueIds = collect();
 			foreach ($streetIds as $id)
 			{
-				$locations = DB::table(DB::raw("locations,streets"))->select(DB::raw("ST_DISTANCE(geolocation,shape)*100000 as distance , venue_id"))->where('OGR_FID', $id)->orderBy('distance', 'asc')->havingRaw("distance < 200")->get();
+				$locations = $this->venueRepository->venuesNearStreet($id);
 				$locations->each(function ($item) use ($streetVenueIds)
 				{
 					$streetVenueIds->push($item->venue_id);
 				});
 			}
 			$streetVenueIds = $streetVenueIds->unique();
-			if (!$request->get('query'))
-			{
-				if ($streetVenueIds->count() == 0)
-				{
-					return $this->response->collection(collect(), new VenueTransformer());
-				}
-				$venueIdsArray = $streetVenueIds->all();
-				$idsImploded = implode(',', $venueIdsArray);
-				$venues = Venue::whereIn('id', $venueIdsArray)->orderByRaw("field(id,{$idsImploded})", $venueIdsArray)->get();
-				return $this->response->collection($venues, new VenueTransformer());
-			}
-			else
-			{
-				$queryVenueIds = $this->repository->suggestVenue($request->get('query'))->pluck('id');
-				$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-				$idsImploded = implode(',', $ids);
-				$venues = Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
-				return $this->response->collection($venues, new VenueTransformer());
-			}
-			$venues = $this->repository->suggestVenue($request->get('query'));
 		}
-		else
+		if ($haveQuery && $haveStreetName)
 		{
-			//			find nearby places
-			if ($request->get('query'))
-			{
-
-			}
-			else
-			{
-
-			}
+//			search in specific street
+			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
+			$venues = $this->venueRepository->findByIds($ids);
+			return $this->response->collection($venues, new VenueTransformer());
 		}
-
+		if ($haveQuery && !$haveStreetName)
+		{
+			//			find nearby places with query
+			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
+			$venues = $this->venueRepository->findByIds($ids);
+			return $this->response->collection($venues, new VenueTransformer());
+		}
+		if (!$haveQuery && $haveStreetName)
+		{
+//			find venues in specif street
+			$ids = $streetVenueIds->all();
+			$venues = $this->venueRepository->findByIds($ids);
+			return $this->response->collection($venues, new VenueTransformer());
+		}
+		if (!$haveQuery && !$haveStreetName)
+		{
+//			find all nearby places
+			$ids = $nearbyVenueIds->all();
+			$venues = $this->venueRepository->findByIds($ids);
+			return $this->response->collection($venues, new VenueTransformer());
+		}
 	}
 
+	public function suggestVenues(Request $request)
+	{
+		//				get back a set of tags and a set of venues
+	}
 
 	public function suggestStreets(Request $request)
 	{
@@ -103,12 +126,16 @@ class SearchesController extends BaseController {
 		$rules = [
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
-			'name' => 'string'
+			'streetName' => 'required|string'
 		];
-		$validator = app('validator')->make(compact('lat', 'lng'), $rules);
+		$validator = app('validator')->make($request->all(), $rules);
 		if ($validator->fails())
-			$this->response->errorBadRequest("Validation failed.");
+			$this->response->errorBadRequest($this->errorResponse($validator));
 		$userCity = $this->cityRepository->getCity($lat, $lng);
-		return $this->response->collection($this->repository->suggestStreet($request->get('name'), $userCity), new StreetTransformer());
+		if (is_null($userCity))
+		{
+			return $this->response->errorBadRequest("We are not in your city yet");
+		}
+		return $this->response->collection($this->repository->suggestStreet($request->get('streetName'), $userCity), new StreetTransformer());
 	}
 }

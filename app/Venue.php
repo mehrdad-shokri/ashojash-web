@@ -197,7 +197,7 @@ class Venue extends Model {
 
 	public function toSearchableArray()
 	{
-		$array = array("name" => $this->name, "name_suggest" => $this->name, $this->getKeyName() => $this->getKey(),"tags"=>$this->tags);
+		$array = array("name" => $this->name, "name_suggest" => $this->name, $this->getKeyName() => $this->getKey(), "tags" => ['name' => $this->tags()->pluck('name'), 'weight' => $this->tags()->pluck('weight')]);
 		return $array;
 	}
 
