@@ -65,7 +65,7 @@ class Burger extends Component {
 								{_.indexOf(this.props.permissions, 'manage-venue') > 0 ?
 										<RadiumLink className={cx('menuItem')} to="/admin/panel/venues"
 																activeClassName={cx('activeMenuItem')}>
-												<i className={classNames('md')} style={{fontSize: 28}}>class</i>
+												<i className={classNames('md')} style={{fontSize: 28}}>business</i>
 												<span style={{verticalAlign: 'top', fontSize: 22}}>کسب و کار</span></RadiumLink> : <span></span>}
 
 								<div className={cx('myLove')}>ساخته شده با <i className={cx("fa fa-heart", "heart")}></i> توسط

@@ -19,9 +19,10 @@ class Tag extends Model {
 	{
 		return $this->morphMany('App\Photo', 'imageable');
 	}
-	public function toSearchableArray (){
 
-		$array = array("name" => $this->name,'id'=>$this->getKey());
+	public function toSearchableArray()
+	{
+		$array = array('name' => $this->name, 'name_suggest' => $this->name, 'id' => $this->getKey());
 		return $array;
 	}
 }

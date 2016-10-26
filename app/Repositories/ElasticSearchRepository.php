@@ -5,6 +5,7 @@ namespace app\Repository;
 use App\City;
 use App\Location;
 use App\Street;
+use App\Tag;
 use App\Venue;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Collection;
@@ -184,5 +185,48 @@ class ElasticSearchRepository implements SearchRepository {
 			"id", $keys
 		)->orderByRaw("field(id,{$idsImploded})", $keys)->get()->keyBy("id");
 		return $models;
+	}
+
+	/**
+	 * Map the given results to instances of the given model.
+	 *
+	 * @param  mixed $results
+	 * @return Collection
+	 */
+	public function mapTagsToCollection($results)
+	{
+		if (count($results['hits']['hits']) === 0)
+		{
+			return Collection::make();
+		}
+		$keys = collect($results['hits']['hits'])
+			->pluck('_id')
+			->values()
+			->all();
+		$idsImploded = implode(',', $keys);
+		$models = Tag::whereIn(
+			"id", $keys
+		)->orderByRaw("field(id,{$idsImploded})", $keys)->get()->keyBy("id");
+		return $models;
+	}
+
+	public function suggestTag($name)
+	{
+		$client = ClientBuilder::create()->build();
+		$params = [
+			'index' => 'ashojash',
+			'type' => 'tags',
+			'body' => [
+				'query' => [
+					"match" => [
+						'name_suggest' => [
+							'query' => $name
+						]
+					]
+				],
+			]
+		];
+		$results = $client->search($params);
+		return $this->mapTagsToCollection($results);
 	}
 }

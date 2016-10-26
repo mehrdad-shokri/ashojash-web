@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V2\Mobile;
 
+use App\Api\Transformer\Backend\VenueTagTransformer;
 use App\Api\Transformer\StreetTransformer;
+use App\Api\Transformer\VenueTagCombinedTransformer;
 use App\Api\Transformer\VenueTransformer;
 use App\City;
 use App\Http\Controllers\Api\v2\BaseController;
@@ -12,6 +14,7 @@ use app\Repository\SearchRepository;
 use app\Repository\VenueRepository;
 use App\Tag;
 use App\Venue;
+use App\VenueTagCombined;
 use Hamcrest\Collection\IsTraversableWithSizeTest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -116,7 +119,27 @@ class SearchesController extends BaseController {
 
 	public function suggestVenues(Request $request)
 	{
-		//				get back a set of tags and a set of venues
+		$lat = $request->get('lat');
+		$lng = $request->get('lng');
+		$rules = [
+			'name' => 'string',
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric'
+		];
+		$validator = app('validator')->make($request->all(), $rules);
+		if ($validator->fails())
+			$this->response->errorBadRequest("Validation failed.");
+		$userCity = $this->cityRepository->getCity($lat, $lng);
+		if (is_null($userCity))
+		{
+			return $this->response->errorBadRequest("We are not in your city yet");
+		}
+		$tags = $this->repository->suggestTag($request->get('name'));
+		$venues = $this->repository->suggestVenue($request->get('name'));
+		$cityVenue = $this->venueRepository->cityVenues($userCity);
+		$venues = $venues->whereIn('id', $cityVenue->pluck('id')->all());
+		$venueTagsCombined = new VenueTagCombined($venues, $tags);
+		return $this->response->item($venueTagsCombined, new VenueTagCombinedTransformer());
 	}
 
 	public function suggestStreets(Request $request)
