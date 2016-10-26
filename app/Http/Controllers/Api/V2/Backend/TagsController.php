@@ -67,10 +67,9 @@ class TagsController extends BaseController {
 		{
 			$this->response->errorBadRequest($this->errorResponse($validator));
 		}
-		Log::info($request->get('id'));
-		Log::info(Hashids::decode($request->get('id')));
 		$tag = $this->tagRepository->findByIdOrFail(Hashids::decode($request->get('id'))[0]);
 		FileUploader::uploadFile($tag, $request->file('file'), Auth::user(), true);
 		$this->response->created();
 	}
+
 }

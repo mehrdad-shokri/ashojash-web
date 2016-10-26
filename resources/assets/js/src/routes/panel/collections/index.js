@@ -1,5 +1,5 @@
 module.exports = {
-		path: 'collection',
+		path: 'collections',
 		getIndexRoute(location, cb){
 				require.ensure([], ()=> {
 						const collections = require('../../../components/panel/collections/Collections');

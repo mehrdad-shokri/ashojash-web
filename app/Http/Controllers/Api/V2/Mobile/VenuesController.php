@@ -68,9 +68,12 @@ class VenuesController extends BaseController {
 		return $this->response->item($venue, new VenueTransformer());
 	}
 
+	/**
+	 * Deprecated
+	 */
 	public function search(Request $request, $citySlug)
 	{
-        $query = $request->get('q');
+		$query = $request->get('q');
 		$limit = $request->get('l');
 		$rules = [
 			$this->citySlugRule,

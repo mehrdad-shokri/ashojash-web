@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {newTag, getTags, tagMessage, uploadFile, resetTagStatus} from '../../../actions'
@@ -9,13 +9,12 @@ const cx = classNames.bind(styles);
 const DropZone = require('react-dropzone');
 import findIndex from 'lodash/findIndex';
 import trim from 'lodash/trim';
-import {TAG_EXISTS_ERROR} from '../../../actions/tag_actions';
 import {
 		Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn
 }    from 'material-ui/Table';
 import Snackbar from 'material-ui/Snackbar';
 
-class Tags extends React.Component {
+class Tags extends Component {
 
 		constructor(props) {
 				super(props);
@@ -46,7 +45,7 @@ class Tags extends React.Component {
 								this.props.tags.unshift(tagObject);
 						}
 						else {
-								this.props.tagMessage(TAG_EXISTS_ERROR);
+								this.props.tagMessage("تگ قبلا انتخاب شده");
 						}
 				}
 		}
@@ -62,8 +61,7 @@ class Tags extends React.Component {
 				if (!this.props.isRequesting && (this.props.hasTags || this.props.hasMessage)) {
 						progress.done();
 				}
-				if(this.props.uploadedTagPhoto)
-				{
+				if (this.props.uploadedTagPhoto) {
 						this.props.getTags();
 				}
 		}
@@ -142,11 +140,11 @@ class Tags extends React.Component {
 }
 function mapDispatchToProps(dispatch) {
 		return bindActionCreators({
-				getTags: getTags,
-				newTag: newTag,
-				tagMessage: tagMessage,
-				uploadFile: uploadFile,
-				resetTagStatus: resetTagStatus
+				getTags,
+				newTag,
+				tagMessage,
+				uploadFile,
+				resetTagStatus
 		}, dispatch);
 }
 

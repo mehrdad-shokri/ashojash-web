@@ -18,7 +18,8 @@ module.exports = {
         require.ensure([], ()=> {
             cb(null, [
                 require('./collections'),
-                require('./tags')
+                require('./tags'),
+                require('./venues')
             ])
         })
     }

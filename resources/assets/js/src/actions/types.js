@@ -40,5 +40,12 @@ export const RESET_TAG_STATUS = "reset_tag_status";
 export const UPLOADING_TAG_PHOTO = "uploading_tag_photo";
 export const TAG_PHOTO_UPLOADED = "tag_photo_uploaded";
 
+export const VENUE_REQUEST = "venue_request";
+export const VENUE_RESPONSE = "venue_response";
+export const VENUE_MESSAGE = "venue_message";
+export const VENUE_TAGS_RESPONSE = "venue_message";
+export const IS_LOADING_VENUE_TAGS = "is_loading_venue_tags";
+export const VENUE_TAGS_SEARCH_RESPONSE = "venue_tags_search_response";
+
 export const MODALS = 'modals';
 export const MODAL_TYPE = 'modal_type';

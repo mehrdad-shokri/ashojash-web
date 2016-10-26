@@ -18,9 +18,11 @@ class ChangeLatLngToShape extends Migration {
 			$tableName = 'locations';
 			$pointColumn = 'geolocation';
 			$indexName = 'sx_locations_geolocation';
-			$lng = 'lng';
+			$lng='lng';
 			DB::statement("Alter TABLE $tableName ADD COLUMN $pointColumn POINT AFTER $lng");
-			DB::statement("UPDATE  $tableName SET $pointColumn = Point($tableName.lng,$tableName.lat)");
+			DB::statement("UPDATE  $tableName SET $pointColumn = POINT($tableName.lng,$tableName.lat)");
+			DB::statement("UPDATE $tableName set geolocation = ST_GeomFromText(st_astext(geolocation),0)");
+			DB::statement("UPDATE streets set shape = ST_GeomFromText(st_astext(shape),0)");
 			DB::statement("ALTER TABLE $tableName MODIFY  $pointColumn POINT NOT NULL");
 			DB::statement("CREATE SPATIAL INDEX $indexName ON $tableName($pointColumn)");
 		});

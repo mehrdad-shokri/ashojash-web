@@ -21,12 +21,9 @@
         "dingo/blueprint": "^0.2.0",
         "artisaninweb/laravel-soap": "0.2.5.10",
         "guzzlehttp/guzzle": "^6.2",
-<<<<<<< 28ec7f5438ec990c101ca739852dcf8551cf50d5
-        "vinkla/hashids": "^2.4"
-=======
+        "vinkla/hashids": "^2.4",
         "laravel/scout": "^1.1",
         "elasticsearch/elasticsearch": "^2.2"
->>>>>>> Adds street search and venue finding in a street
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

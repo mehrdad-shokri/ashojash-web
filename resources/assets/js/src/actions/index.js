@@ -34,6 +34,13 @@ import {
 		uploadFile,
 		resetTagStatus
 } from './tag_actions';
+import {
+		getVenues,
+		venueMessage,
+		getVenueTags,
+		searchTags,
+		addTag
+}from './venue_actions'
 import {setIsModal, setModalType} from './modal_actions';
 export {
 		getPermissions,
@@ -66,6 +73,11 @@ export {
 		newTag,
 		tagMessage,
 		uploadFile,
-		resetTagStatus
+		resetTagStatus,
+		venueMessage,
+		getVenues,
+		getVenueTags,
+		searchTags,
+		addTag
 };
 export {getCollections};

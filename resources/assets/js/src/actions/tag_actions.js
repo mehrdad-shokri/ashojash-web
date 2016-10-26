@@ -9,7 +9,6 @@ import {
 		UPLOADING_TAG_PHOTO,
 		TAG_PHOTO_UPLOADED
 }from './types';
-export const TAG_EXISTS_ERROR = "تگ قبلا انتخاب شده";
 export function getTags() {
 		return function(dispatch) {
 				dispatch(getTagsRequest());
