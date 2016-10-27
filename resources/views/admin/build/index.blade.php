@@ -16,7 +16,7 @@
   
 
   
-  <link href="/build/admin.19765042fa91fa869f51.css" rel="stylesheet">
+  <link href="/build/admin.45f25436e34c29ebdd7c.css" rel="stylesheet">
   
 
   
@@ -36,11 +36,11 @@
 
 
 
-<script src="/build/manifest.39da12f044d45d1a3bea.js"></script>
+<script src="/build/manifest.52b25736c997d0abb931.js"></script>
 
-<script src="/build/vendor.84c9d7ed755271633425.js"></script>
+<script src="/build/vendor.cb387fe7f362ddcdf473.js"></script>
 
-<script src="/build/admin.19765042fa91fa869f51.js"></script>
+<script src="/build/admin.45f25436e34c29ebdd7c.js"></script>
 
 
 
