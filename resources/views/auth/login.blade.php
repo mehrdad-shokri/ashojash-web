@@ -46,7 +46,7 @@
                             <h2 class="br-line"><span>یا</span></h2>
                         </div>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                            {{csrf_field()}}
+                        {!! csrf_field() !!}
                             <!--- Fullname Field --->
                             <!--- Username Field --->
                         {{--  <div class="form-group col-xs-10">

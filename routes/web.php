@@ -142,7 +142,7 @@ Route::group(['prefix' => 'dep/admin', 'namespace' => 'Admin'], function ()
 		Route::put("role /{roleId}", 'RolesController@update');
 		Route::delete("role/{roleId}", 'RolesController@delete');
 	});
-	/*Route::group(['middleware' => 'manage-tag'], function ()
+	Route::group(['middleware' => 'manage-tag'], function ()
 	{
 		Route::get('tag/all', 'TagsController@all');
 		Route::get('tag/create', 'TagsController@create');
@@ -150,7 +150,7 @@ Route::group(['prefix' => 'dep/admin', 'namespace' => 'Admin'], function ()
 		Route::put('tag/{tagId}', 'TagsController@update');
 		Route::delete('tag/{tagId}', 'TagsController@delete');
 		Route::post('tag/create', 'TagsController@store');
-	});*/
+	});
 	Route::group(['middleware' => 'manage-feature'], function ()
 	{
 		Route::get('feature/all', 'FeaturesController@all');
