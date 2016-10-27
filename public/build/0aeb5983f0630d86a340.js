@@ -1,0 +1,2 @@
+webpackJsonp([11,17],{1048:function(n,t,e){"use strict";n.exports={path:":slug",getComponent:function(n,t){e.e(12,function(){t(null,e(1049))})}},function(){"undefined"==typeof __REACT_HOT_LOADER__}()}});
+//# sourceMappingURL=0aeb5983f0630d86a340.js.map

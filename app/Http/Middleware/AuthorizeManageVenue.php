@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorizeManageVenue{
 
@@ -32,27 +33,13 @@ class AuthorizeManageVenue{
 	 */
 	public function handle($request, Closure $next)
 	{
-		if ($this->auth->guest())
+		$user = Auth::user();
+		if (!is_null($user))
 		{
-			if ($request->ajax())
-				return response('Unauthorized', 403);
-			else
-			{
-				abort(403);
-			}
+			$canSeePanel = $user->can($this->PERMISSION_NAME);
+			if ($canSeePanel)
+				return $next($request);
 		}
-		if ($this->auth->user()->can($this->PERMISSION_NAME))
-		{
-			return $next($request);
-		}
-		else
-		{
-			if ($request->ajax())
-				return response('Unauthorized', 403);
-			else
-			{
-				abort(404);
-			}
-		}
+		return response('Bad request', 400);
 	}
 }

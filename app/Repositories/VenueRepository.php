@@ -13,6 +13,8 @@ interface VenueRepository {
 
 	public function findById($id);
 
+	public function findByIds($ids);
+
 	public function all($with);
 
 	public function create($name, $phone, $status = 0);
@@ -44,4 +46,8 @@ interface VenueRepository {
 	public function venuePhotosCount(Venue $venue);
 
 	public function venueMenusCount(Venue $venue);
+
+	public function searchTag(Venue $venue, $query, $filter = true);
+
+	public function venuesNearStreet ($streetId);
 }

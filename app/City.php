@@ -15,12 +15,10 @@ class City extends Model
     {
         $city = $this;
 
-        $venues = Venue::whereHas('location', function ($query) use ($city)
-        {
+        $venues = Venue::whereHas('location', function ($query) use ($city) {
             $query->whereCityId($city->getKey());
         })
-            ->whereHas('cuisines', function ($query) use ($cuisineSlug)
-            {
+            ->whereHas('cuisines', function ($query) use ($cuisineSlug) {
                 $query->whereSlug($cuisineSlug);
             });
 
@@ -30,17 +28,16 @@ class City extends Model
     public function takeTopVenuesByCuisineSlug($cuisineSlug)
     {
         $city = $this;
-        $venues = Venue::whereHas('location', function ($query) use ($city)
-        {
+        $venues = Venue::whereHas('location', function ($query) use ($city) {
             $query->whereCityId($city->getKey());
         })
-            ->whereHas('cuisines', function ($query) use ($cuisineSlug)
-            {
+            ->whereHas('cuisines', function ($query) use ($cuisineSlug) {
                 $query->whereSlug($cuisineSlug);
             });
 
         return $venues;
     }
+
     public function locations()
     {
         return $this->hasMany('App\Location');
@@ -64,6 +61,11 @@ class City extends Model
             $query->whereCityId($city->id);
         })->get();
         return $venues;
+    }
+
+    public function streets()
+    {
+        return $this->hasMany("App\Street");
     }
 
     /**

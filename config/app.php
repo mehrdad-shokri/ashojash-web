@@ -174,7 +174,8 @@ return [
 		Artisaninweb\SoapWrapper\ServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-
+		Vinkla\Hashids\HashidsServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -246,6 +247,7 @@ return [
 		'DingoRoute' => Dingo\Api\Facade\Route::class,
 		'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
 		'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-    ],
+		'Hashids' => Vinkla\Hashids\Facades\Hashids::class
+	],
 
 ];

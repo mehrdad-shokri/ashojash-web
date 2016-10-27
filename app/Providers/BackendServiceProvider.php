@@ -36,5 +36,7 @@ class BackendServiceProvider extends ServiceProvider
 		$this->app->bind('app\Repository\PaymentRepository', 'app\Repository\ZarinpalPaymentRepository');
 		$this->app->bind('app\Repository\PaymentProviderRepository', 'app\Repository\ZarinpalPaymentProviderRepository');
 		$this->app->bind('app\Repository\CollectionRepository', 'app\Repository\DbCollectionRepository');
+		$this->app->bind('app\Repository\TagRepository', 'app\Repository\DbTagRepository');
+		$this->app->bind('app\Repository\SearchRepository', 'app\Repository\ElasticSearchRepository');
     }
 }

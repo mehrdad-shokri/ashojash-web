@@ -36,6 +36,6 @@ task('deploy', [
 	'deploy:writable',
 	'cleanup',
 	'environment:copy',
-	'db:migrate',
+	/*'db:migrate',*/
 	'success'
 ])->desc('Deploy your project');

@@ -1,6 +1,6 @@
 import React, {Component} from'react';
 const progress = require('nprogress');
-import {Field, reduxForm, reset} from 'redux-form';
+import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import{Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
@@ -346,7 +346,6 @@ class CreateCollection extends Component {
     }
 
     componentWillUnmount() {
-        console.log('unmounting');
         this.props.reset();
         this.props.resetCollectionCreation();
         this.setState({

@@ -14,9 +14,4 @@ module.exports = {
 						]);
 				})
 		}
-		/*getComponent(location, cb){
-		 require.ensure([], ()=> {
-		 cb(null, require('../../components/Collections'))
-		 });
-		 },*/
 }

@@ -30,6 +30,20 @@ $factory->define(App\Venue::class, function (Faker\Generator $faker)
 	];
 
 });
+$factory->define(App\Location::class, function (Faker\Generator $faker)
+{
+    $faker = Faker\Factory::create('fa_IR');
+    return [
+        'address' => $faker->address,
+        'city_id' => 1,
+        'country_id' => 1,
+        'lat' => $faker->latitude,
+        'lng' => $faker->longitude,
+        'created_at' => $faker->date(),
+        'updated_at' => $faker->date()
+    ];
+
+});
 $factory->define(App\City::class, function (Faker\Generator $faker)
 {
 	$faker = Faker\Factory::create('fa_IR');

@@ -1,5 +1,4 @@
 import {
-		authError,
 		getPermissions,
 		getPermissionsRequest,
 		signinUser,
@@ -27,10 +26,23 @@ import {
 		setCollectionType,
 		resetCollectionCreation,
 		resetCollectionStates
-} from './collections_actions';
+} from './collection_actions';
+import {
+		getTags,
+		newTag,
+		tagMessage,
+		uploadFile,
+		resetTagStatus
+} from './tag_actions';
+import {
+		getVenues,
+		venueMessage,
+		getVenueTags,
+		searchTags,
+		addTag
+}from './venue_actions'
 import {setIsModal, setModalType} from './modal_actions';
 export {
-		authError,
 		getPermissions,
 		getPermissionsRequest,
 		signinUser,
@@ -56,6 +68,16 @@ export {
 		resetCollectionCreation,
 		resetCollectionStates,
 		authenticateUser,
-		refreshTokenIfNecessary
+		refreshTokenIfNecessary,
+		getTags,
+		newTag,
+		tagMessage,
+		uploadFile,
+		resetTagStatus,
+		venueMessage,
+		getVenues,
+		getVenueTags,
+		searchTags,
+		addTag
 };
 export {getCollections};

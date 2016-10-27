@@ -7,8 +7,6 @@ use League\Fractal\TransformerAbstract;
 
 class SimplePhotoTransformer extends TransformerAbstract {
 
-
-//cuisine, venue
 	public function transform(Photo $photo)
 	{
 		$image = Image::make(Storage::disk('local')->get($photo->path));
