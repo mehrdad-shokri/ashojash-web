@@ -14,7 +14,10 @@ class DropNullNamesFromStreetsTable extends Migration
     public function up()
     {
         Schema::table('streets', function (Blueprint $table) {
-            DB::statement("DELETE FROM streets WHERE name IS NULL");
+			if (Schema::hasTable('streets'))
+			{
+				DB::statement("DELETE FROM streets WHERE name IS NULL");
+			}
         });
     }
 
