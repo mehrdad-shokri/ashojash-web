@@ -6,13 +6,13 @@ use App\Api\Transformer\PermissionTransformer;
 use App\Api\Transformer\TokenTransformer;
 use App\Api\Transformer\UserTransformer;
 use App\Http\Controllers\Api\v2\BaseController;
-use App\Permission;
 use app\Repository\UserRepository;
 use Google_Auth_Exception;
 use Google_Service_Oauth2;
 use Google_Service_Plus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -39,7 +39,7 @@ class AuthController extends BaseController
             'login' => 'required',
             'password' => 'required',
         ];
-        $validator = app('validator')->make($request->all(), $rules);
+		$validator = app('validator')->make($request->all(), $rules);
         if ($validator->fails()) {
             $this->response->errorBadRequest($this->errorResponse($validator));
         }
