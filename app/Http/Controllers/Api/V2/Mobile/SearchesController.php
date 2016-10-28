@@ -122,7 +122,7 @@ class SearchesController extends BaseController {
 		$lat = $request->get('lat');
 		$lng = $request->get('lng');
 		$rules = [
-			'name' => 'string',
+			'name' => 'required|string',
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric'
 		];
@@ -159,7 +159,7 @@ class SearchesController extends BaseController {
 		{
 			return $this->response->errorBadRequest("We are not in your city yet");
 		}
-		$streets=$this->repository->suggestStreet($request->get('streetName'), $userCity);
+		$streets = $this->repository->suggestStreet($request->get('streetName'), $userCity);
 		$streets = $streets->unique('name');
 		return $this->response->collection($streets, new StreetTransformer());
 	}

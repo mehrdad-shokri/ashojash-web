@@ -231,6 +231,8 @@ class DbVenueRepository implements VenueRepository {
 
 	public function findByIds($ids)
 	{
+		if (count($ids) == 0)
+			return collect();
 		$idsImploded = implode(',', $ids);
 		return Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
 	}

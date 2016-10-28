@@ -14,11 +14,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ApiServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
+
+	/**
+	 * Bootstrap the application services.
+	 *
+	 * @param ExceptionHandler $handler
+	 */
     public function boot(ExceptionHandler $handler)
 	{
 		app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app)
