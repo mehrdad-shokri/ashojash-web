@@ -36,7 +36,7 @@ class DbVenueRepository implements VenueRepository {
 
 	public function create($name, $phone, $status = 0)
 	{
-		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status, 'starts_at' => Carbon::now(), 'valid_until' => Carbon::now()->subMinute(), 'score' => 0, 'cost' => 0, 'type' => 0]);
+		return Venue::create(['name' => $name, 'phone' => $phone, 'status' => $status, 'starts_at' => Carbon::now(), 'valid_until' => Carbon::now()->subMinute(), 'score' => 0, 'cost' => 0]);
 	}
 
 	public function whereCity($slug, City $city)
