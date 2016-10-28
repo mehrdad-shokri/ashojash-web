@@ -122,7 +122,7 @@ class SearchesController extends BaseController {
 		$lat = $request->get('lat');
 		$lng = $request->get('lng');
 		$rules = [
-			'name' => 'required|string',
+			'query' => 'required|string',
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric'
 		];
@@ -134,8 +134,8 @@ class SearchesController extends BaseController {
 		{
 			return $this->response->errorBadRequest("We are not in your city yet");
 		}
-		$tags = $this->repository->suggestTag($request->get('name'));
-		$venues = $this->repository->suggestVenue($request->get('name'));
+		$tags = $this->repository->suggestTag($request->get('query'));
+		$venues = $this->repository->suggestVenue($request->get('query'));
 		$cityVenue = $this->venueRepository->cityVenues($userCity);
 		$venues = $venues->whereIn('id', $cityVenue->pluck('id')->all());
 		$venueTagsCombined = new VenueTagCombined($venues, $tags);
