@@ -5,5 +5,5 @@ namespace app\Repository;
 
 interface StreetRepository {
 
-	function nearbyStreets($lat, $lng, $distance = 300);
+	function nearbyStreets($lat, $lng, $limit = 15);
 }
