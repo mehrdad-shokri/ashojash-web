@@ -38,5 +38,6 @@ class BackendServiceProvider extends ServiceProvider
 		$this->app->bind('app\Repository\CollectionRepository', 'app\Repository\DbCollectionRepository');
 		$this->app->bind('app\Repository\TagRepository', 'app\Repository\DbTagRepository');
 		$this->app->bind('app\Repository\SearchRepository', 'app\Repository\ElasticSearchRepository');
+		$this->app->bind('app\Repository\StreetRepository', 'app\Repository\DbStreetRepository');
     }
 }

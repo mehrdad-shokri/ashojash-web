@@ -244,16 +244,14 @@ $api = app('api.router');
 $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 {
 	$mobileControllerNameSpace = 'App\Http\Controllers\Api\V2\Mobile\\';
-//	$api->post("venue/search/nearby", $mobileControllerNameSpace . "SearchesController@nearby");
-//	$api->post("venue/search", $mobileControllerNameSpace . "SearchesController@streetSearch");
-
 	$api->get('city/all', $mobileControllerNameSpace . "CitiesController@all");
 	$api->get('venue/nearby/lat/{lat}/lng/{lng}', $mobileControllerNameSpace . 'CitiesController@nearbyVenues');
 	$api->get("venue/search/city/{citySlug}", $mobileControllerNameSpace . "VenuesController@search");
-
-    $api->post("venue/suggest", $mobileControllerNameSpace . "SearchesController@suggestVenues");
+    $api->post("term/suggest", $mobileControllerNameSpace . "SearchesController@suggestVenues");
 	$api->post("venue/search", $mobileControllerNameSpace . "SearchesController@searchVenues");
 	$api->post("location/suggest", $mobileControllerNameSpace . "SearchesController@suggestStreets");
+	$api->post('location/nearby', $mobileControllerNameSpace . "SearchesController@nearbyStreets");
+	$api->post("tag/suggestions", $mobileControllerNameSpace . "TagsController@suggestions");
 //    $api->post("street/search", $mobileControllerNameSpace . "SearchesController@searchStreets");
 	$api->get("venue/{venueSlug}", $mobileControllerNameSpace . "VenuesController@index");
 	$api->get("venue/{venueSlug}/reviews", $mobileControllerNameSpace . "VenuesController@reviews");
@@ -275,7 +273,7 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 $api = app('api.router');
 $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 {
-	$mobileControllerNameSpace = 'App\Http\Controllers\Api\V2\Mobile\\';
+	/*$mobileControllerNameSpace = 'App\Http\Controllers\Api\V2\Mobile\\';
 	$api->get('city/all', $mobileControllerNameSpace . "CitiesController@all");
 	$api->get('venue/nearby/lat/{lat}/lng/{lng}', $mobileControllerNameSpace . 'CitiesController@nearbyVenues');
 	$api->get("venue/search/city/{citySlug}", $mobileControllerNameSpace . "VenuesController@search");
@@ -293,7 +291,7 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 	{
 		$api->post("user/review/add", $mobileControllerNameSpace . "UsersController@addReview");
 		$api->post("user/addVenuePhoto/{venueSlug}", $mobileControllerNameSpace . "UsersController@addVenuePhoto");
-	});
+	});*/
 
 	$api->group(['prefix' => 'admin'], function () use ($api)
 	{

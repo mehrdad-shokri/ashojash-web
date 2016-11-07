@@ -19,4 +19,6 @@ interface TagRepository {
 	public function search($query);
 
 	public function addTag(Venue $venue, $weight, Tag $tag);
+
+	public function topLevels ($limit=10);
 }
