@@ -541,6 +541,19 @@ task("db:migrate", function ()
 	writeln('<info>' . $output . '</info>');
 })->desc('Migrating database');
 
+task("route:cache", function ()
+{
+	$output = run('if [ -d {{deploy_path}} ] && [ -d {{deploy_path}}/current ]; then sudo php {{deploy_path}}/current/artisan route:cache; fi');
+	run('if [ -d {{deploy_path}} ] && [ -d {{deploy_path}}/current ]; then sudo php {{deploy_path}}/current/artisan api:cache; fi');
+	writeln('<info>' . $output . '</info>');
+})->desc('Caching routes');
+
+task("restart", function ()
+{
+	$output = run('sudo service php7.0 restart');
+	writeln('<info>' . $output . '</info>');
+})->desc('Migrating database');
+
 task('environment:copy', function ()
 {
 	upload('/home/vagrant/ashojash/.env.production', '{{release_path}}/.env');

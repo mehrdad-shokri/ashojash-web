@@ -37,4 +37,9 @@ class DbTagRepository implements TagRepository {
 		$venue->tags()->sync([$tag->getKey() => ['weight' => $weight]], false);
 	}
 
+	public function topLevels($limit = 10)
+	{
+		return Tag::where('level', 1)->take($limit)->get();
+	}
+
 }

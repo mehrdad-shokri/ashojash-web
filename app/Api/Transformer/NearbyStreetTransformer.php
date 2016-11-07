@@ -9,13 +9,14 @@ use League\Fractal\TransformerAbstract;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Token;
 
-class StreetTransformer extends TransformerAbstract {
+class NearbyStreetTransformer extends TransformerAbstract {
 
 
-	public function transform(Street $street)
+	public function transform($street)
 	{
 		return [
-			'name' => $street->name
+			'name' => $street->name,
+			'distance' => $street->distance
 		];
 	}
 }

@@ -2,7 +2,6 @@
 
 
 use App\City;
-use App\Location;
 use App\Tag;
 use App\Venue;
 use Carbon\Carbon;
@@ -132,7 +131,7 @@ class DbVenueRepository implements VenueRepository {
 			->pluck('venue_id')
 			->all();
 		$idsImploded = implode(',', $venueIds);
-		$venues = Venue::whereIn('id', $venueIds)->orderByRaw("field(id,{$idsImploded})", $venueIds)->get();
+		$venues = Venue::whereIn('id', $venueIds)->orderByRaw("field(id,{$idsImploded})", $venueIds)->take($limit)->get();
 		return $venues;
 	}
 
@@ -241,6 +240,5 @@ class DbVenueRepository implements VenueRepository {
 	{
 		return DB::table(DB::raw("locations,streets"))->select(DB::raw("ST_DISTANCE(geolocation,shape)*100000 as distance , venue_id"))->where('OGR_FID', $streetId)->orderBy('distance', 'asc')->havingRaw("distance < 200")->get();
 	}
-
 
 }

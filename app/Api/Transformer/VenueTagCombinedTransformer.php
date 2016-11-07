@@ -3,7 +3,6 @@
 namespace App\Api\Transformer;
 
 
-use App\Api\Transformer\Backend\TagTransformer;
 use App\VenueTagCombined;
 
 class VenueTagCombinedTransformer extends BaseTransformer {
@@ -13,7 +12,6 @@ class VenueTagCombinedTransformer extends BaseTransformer {
 	public function transform(VenueTagCombined $venueTagCombined)
 	{
 		return[
-
 		];
 	}
 

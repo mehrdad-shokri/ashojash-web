@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\Api\V2\Mobile;
 
-use App\Api\Transformer\Backend\VenueTagTransformer;
+use App\Api\Transformer\NearbyStreetTransformer;
 use App\Api\Transformer\StreetTransformer;
 use App\Api\Transformer\VenueTagCombinedTransformer;
 use App\Api\Transformer\VenueTransformer;
-use App\City;
 use App\Http\Controllers\Api\v2\BaseController;
-use App\Location;
 use app\Repository\CityRepository;
 use app\Repository\SearchRepository;
+use app\Repository\StreetRepository;
 use app\Repository\VenueRepository;
-use App\Tag;
-use App\Venue;
 use App\VenueTagCombined;
-use Hamcrest\Collection\IsTraversableWithSizeTest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SearchesController extends BaseController {
 
@@ -132,7 +127,7 @@ class SearchesController extends BaseController {
 		$userCity = $this->cityRepository->getCity($lat, $lng);
 		if (is_null($userCity))
 		{
-			return $this->response->errorBadRequest("We are not in your city yet");
+			return $this->response->errorBadRequest("We are not in your city yet.");
 		}
 		$tags = $this->repository->suggestTag($request->get('query'));
 		$venues = $this->repository->suggestVenue($request->get('query'));
@@ -149,7 +144,7 @@ class SearchesController extends BaseController {
 		$rules = [
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
-			'streetName' => 'required|string'
+			'query' => 'required|string'
 		];
 		$validator = app('validator')->make($request->all(), $rules);
 		if ($validator->fails())
@@ -159,8 +154,29 @@ class SearchesController extends BaseController {
 		{
 			return $this->response->errorBadRequest("We are not in your city yet");
 		}
-		$streets = $this->repository->suggestStreet($request->get('streetName'), $userCity);
+		$streets = $this->repository->suggestStreet($request->get('query'), $userCity);
 		$streets = $streets->unique('name');
 		return $this->response->collection($streets, new StreetTransformer());
+	}
+
+	public function nearbyStreets(Request $request, StreetRepository $repository)
+	{
+		$lat = $request->get('lat');
+		$lng = $request->get('lng');
+		$rules = [
+			'lat' => 'required|numeric',
+			'lng' => 'required|numeric',
+		];
+		$validator = app('validator')->make($request->all(), $rules);
+		if ($validator->fails())
+			$this->response->errorBadRequest("Validation failed.");
+		$userCity = $this->cityRepository->getCity($lat, $lng);
+		if (is_null($userCity))
+		{
+			return $this->response->errorBadRequest('We are not in your city yet.');
+		}
+		$nearbyStreets = $repository->nearbyStreets($lat, $lng);
+		$nearbyStreets = $nearbyStreets->unique('name');
+		return $this->response->collection($nearbyStreets, new NearbyStreetTransformer());
 	}
 }
