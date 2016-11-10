@@ -71,7 +71,6 @@ class SearchesController extends BaseController {
 		}
 		if ($haveStreetName)
 		{
-//			dd($this->repository->searchStreet($request->get('streetName'), $userCity)->pluck('name'));
 			$streetIds = $this->repository->searchStreet($request->get('streetName'), $userCity)->pluck('OGR_FID');
 			foreach ($streetIds as $id)
 			{
@@ -95,6 +94,7 @@ class SearchesController extends BaseController {
 		{
 			//			find nearby places with query
 			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
+			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
 			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
