@@ -71,6 +71,7 @@ class SearchesController extends BaseController {
 		}
 		if ($haveStreetName)
 		{
+//			dd($this->repository->searchStreet($request->get('streetName'), $userCity)->pluck('name'));
 			$streetIds = $this->repository->searchStreet($request->get('streetName'), $userCity)->pluck('OGR_FID');
 			foreach ($streetIds as $id)
 			{
@@ -82,32 +83,33 @@ class SearchesController extends BaseController {
 			}
 			$streetVenueIds = $streetVenueIds->unique();
 		}
+
 		if ($haveQuery && $haveStreetName)
 		{
 //			search in specific street
 			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if ($haveQuery && !$haveStreetName)
 		{
 			//			find nearby places with query
 			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && $haveStreetName)
 		{
 //			find venues in specif street
 			$ids = $streetVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && !$haveStreetName)
 		{
 //			find all nearby places
 			$ids = $nearbyVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 	}

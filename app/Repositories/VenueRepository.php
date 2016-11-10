@@ -13,7 +13,7 @@ interface VenueRepository {
 
 	public function findById($id);
 
-	public function findByIds($ids);
+	public function findByIds($ids,$lat,$lng);
 
 	public function all($with);
 

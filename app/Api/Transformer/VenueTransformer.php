@@ -28,16 +28,17 @@ class VenueTransformer extends BaseTransformer {
 
 	public function transform(Venue $venue)
 	{
-		return [
-			'name' => $venue->name,
+		$response = ['name' => $venue->name,
 			'slug' => $venue->slug,
 			'score' => $venue->score,
 			'cost' => $venue->cost,
 			'phone' => $venue->phone,
 			'reviewsCount' => $this->venueRepository->venueReviewsCount($venue),
 			'menusCount' => $this->venueRepository->venueMenusCount($venue),
-			'photosCount' => $this->venueRepository->venuePhotosCount($venue)
-		];
+			'photosCount' => $this->venueRepository->venuePhotosCount($venue)];
+		if ($venue->distance)
+			$response['distance'] = $venue->distance;
+		return $response;
 	}
 
 	public function includeMainPhoto(Venue $venue)
