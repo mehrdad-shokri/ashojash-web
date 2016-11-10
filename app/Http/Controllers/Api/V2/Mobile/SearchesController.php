@@ -82,32 +82,34 @@ class SearchesController extends BaseController {
 			}
 			$streetVenueIds = $streetVenueIds->unique();
 		}
+
 		if ($haveQuery && $haveStreetName)
 		{
 //			search in specific street
 			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if ($haveQuery && !$haveStreetName)
 		{
 			//			find nearby places with query
 			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && $haveStreetName)
 		{
 //			find venues in specif street
 			$ids = $streetVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && !$haveStreetName)
 		{
 //			find all nearby places
 			$ids = $nearbyVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids);
+			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 	}

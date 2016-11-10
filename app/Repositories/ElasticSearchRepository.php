@@ -2,7 +2,6 @@
 namespace app\Repository;
 
 
-
 use App\City;
 use App\Location;
 use App\Street;
@@ -128,7 +127,7 @@ class ElasticSearchRepository implements SearchRepository {
 								"match" => [
 									'name' => [
 										'query' => $name,
-										"minimum_should_match" => "80%",
+										"minimum_should_match" => "100%",
 									]
 								]
 							],
