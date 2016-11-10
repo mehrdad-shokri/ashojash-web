@@ -228,12 +228,18 @@ class DbVenueRepository implements VenueRepository {
 		return $searchedTags;
 	}
 
-	public function findByIds($ids)
+	public function findByIds($ids, $lat = null, $lng = null)
 	{
 		if (count($ids) == 0)
 			return collect();
 		$idsImploded = implode(',', $ids);
-		return Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
+		$venues = Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
+		if (!(is_null($lat) || is_null($lng)))
+			$venues->map(function ($model) use ($lat, $lng)
+			{
+				$model['distance'] = round($this->vincentyGreatCircleDistance($model->location->lat, $model->location->lng, $lat, $lng), 2);
+			});
+		return $venues;
 	}
 
 	public function venuesNearStreet($streetId)
@@ -241,4 +247,31 @@ class DbVenueRepository implements VenueRepository {
 		return DB::table(DB::raw("locations,streets"))->select(DB::raw("ST_DISTANCE(geolocation,shape)*100000 as distance , venue_id"))->where('OGR_FID', $streetId)->orderBy('distance', 'asc')->havingRaw("distance < 200")->get();
 	}
 
+	/**
+	 * Calculates the great-circle distance between two points, with
+	 * the Vincenty formula.
+	 * @param float $latitudeFrom Latitude of start point in [deg decimal]
+	 * @param float $longitudeFrom Longitude of start point in [deg decimal]
+	 * @param float $latitudeTo Latitude of target point in [deg decimal]
+	 * @param float $longitudeTo Longitude of target point in [deg decimal]
+	 * @param float|int $earthRadius Mean earth radius in [m]
+	 * @return float Distance between points in [m] (same as earthRadius)
+	 */
+	private function vincentyGreatCircleDistance(
+		$latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+	{
+		// convert from degrees to radians
+		$latFrom = deg2rad($latitudeFrom);
+		$lonFrom = deg2rad($longitudeFrom);
+		$latTo = deg2rad($latitudeTo);
+		$lonTo = deg2rad($longitudeTo);
+
+		$lonDelta = $lonTo - $lonFrom;
+		$a = pow(cos($latTo) * sin($lonDelta), 2) +
+			pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+		$b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
+
+		$angle = atan2(sqrt($a), $b);
+		return $angle * $earthRadius;
+	}
 }
