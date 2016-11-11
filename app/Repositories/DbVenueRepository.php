@@ -130,6 +130,8 @@ class DbVenueRepository implements VenueRepository {
 			->orderBy('distance')
 			->pluck('venue_id')
 			->all();
+		if (count($venueIds)==0)
+			return collect();
 		$idsImploded = implode(',', $venueIds);
 		$venues = Venue::whereIn('id', $venueIds)->orderByRaw("field(id,{$idsImploded})", $venueIds)->take($limit)->get();
 		return $venues;

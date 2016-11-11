@@ -550,7 +550,7 @@ task("route:cache", function ()
 
 task("restart", function ()
 {
-	$output = run('sudo service php7.0 restart');
+	$output = run('sudo service php7.0-fpm restart');
 	writeln('<info>' . $output . '</info>');
 })->desc('Migrating database');
 
