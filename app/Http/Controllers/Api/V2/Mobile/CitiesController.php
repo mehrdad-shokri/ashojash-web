@@ -50,21 +50,22 @@ class CitiesController extends BaseController {
 		return $this->response->collection($cities, new CityTransformer());
 	}
 
-	public function nearbyVenues(Request $request, $lat, $lng)
+	public function nearbyVenues(Request $request)
 	{
-		$distance = $request->get('distance');
-		$limit = $request->get('limit');
 		$rules = [
 			'distance' => 'numeric|max:6',
-			'limit' => 'integer|max:60',
+			'limit' => 'integer|min:1|max:60',
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric'
 		];
-		$validator = app('validator')->make(compact('limit', 'distance', 'lat', 'lng'), $rules);
+		$validator = app('validator')->make($request->all(), $rules);
 		if ($validator->fails())
 			return $this->response->errorBadRequest("Validation failed");
+		$distance = $request->get('distance');
+		$limit = $request->get('limit') ? (int) $request->get('limit') : 30;
+		$lat = $request->get('lat');
+		$lng = $request->get('lng');
 		$venues = $this->venueRepository->nearby($lat, $lng, $distance, $limit);
-
 		return $this->response->collection($venues, new VenueTransformer());
 	}
 }

@@ -50,6 +50,7 @@ class SearchesController extends BaseController {
 		$rules = [
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
+			'limit' => 'integer|min:1|max:100',
 			'streetName' => 'string',
 			'query' => 'string'
 		];
@@ -57,7 +58,7 @@ class SearchesController extends BaseController {
 		if ($validator->fails())
 			$this->response->errorBadRequest("Validation failed.");
 		$userCity = $this->cityRepository->getCity($lat, $lng);
-
+		$limit = ($request->get('limit')) ? (int) $request->get('limit') : 30;
 		if (is_null($userCity))
 		{
 			return $this->response->errorBadRequest('We are not in your city yet.');
@@ -89,15 +90,16 @@ class SearchesController extends BaseController {
 		{
 //			search in specific street
 			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if ($haveQuery && !$haveStreetName)
 		{
-//			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
-//			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
-//			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
-
+			/*
+			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
+			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+			*/
 
 			/*
 			 * SEARCHING FOR A SPECIFIC VENUE SHOULD BRING THAT ONLY
@@ -106,7 +108,7 @@ class SearchesController extends BaseController {
 			/*
 			 * NOW WE ARE RETURNING RESULTS BASED ON QUERY RELEVANCE THERE SHOULD BE A QUERY PARAM TO SORT IT BY DISTANCE
 			 * */
-			$venues = $this->venueRepository->findByIds($queryVenueIds->all(), $userCity, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($queryVenueIds->all(), $userCity, $lat, $lng)->take($limit);
 			$venues = $venues->sortBy('distance');
 			return $this->response->collection($venues, new VenueTransformer());
 		}
@@ -114,14 +116,14 @@ class SearchesController extends BaseController {
 		{
 //			find venues in specif street
 			$ids = $streetVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && !$haveStreetName)
 		{
 //			find all nearby places
 			$ids = $nearbyVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 	}
