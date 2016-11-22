@@ -247,7 +247,7 @@ $api->version('v2', ['middleware' => array('api.throttle')], function ($api)
 	$api->get('city/all', $mobileControllerNameSpace . "CitiesController@all");
 	$api->get('venue/nearby/lat/{lat}/lng/{lng}', $mobileControllerNameSpace . 'CitiesController@nearbyVenues');
 	$api->get("venue/search/city/{citySlug}", $mobileControllerNameSpace . "VenuesController@search");
-    $api->post("term/suggest", $mobileControllerNameSpace . "SearchesController@suggestVenues");
+    $api->post("term/suggest", $mobileControllerNameSpace . "SearchesController@suggestTerm");
 	$api->post("venue/search", $mobileControllerNameSpace . "SearchesController@searchVenues");
 	$api->post("location/suggest", $mobileControllerNameSpace . "SearchesController@suggestStreets");
 	$api->post('location/nearby', $mobileControllerNameSpace . "SearchesController@nearbyStreets");

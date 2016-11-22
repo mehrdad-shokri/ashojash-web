@@ -55,15 +55,16 @@ class CitiesController extends BaseController {
 		$distance = $request->get('distance');
 		$limit = $request->get('limit');
 		$rules = [
-			'distance' => 'numeric',
-			'limit' => 'integer',
+			'distance' => 'numeric|max:6',
+			'limit' => 'integer|max:60',
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric'
 		];
 		$validator = app('validator')->make(compact('limit', 'distance', 'lat', 'lng'), $rules);
 		if ($validator->fails())
 			return $this->response->errorBadRequest("Validation failed");
-		$venues = $this->venueRepository->setWith("venue")->nearby($lat, $lng, $distance, $limit);
+		$venues = $this->venueRepository->nearby($lat, $lng, $distance, $limit);
+
 		return $this->response->collection($venues, new VenueTransformer());
 	}
 }

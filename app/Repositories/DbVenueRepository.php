@@ -113,27 +113,31 @@ class DbVenueRepository implements VenueRepository {
 	}
 
 	/**
-	 * @param $userLat
-	 * @param $userLng
+	 * @param $lat
+	 * @param $lng
 	 * @param float|int $distance in KM
 	 * @param int $limit
 	 * @return mixed nearby venues
 	 */
-	public function nearby($userLat, $userLng, $distance = 3, $limit = 30)
+	public function nearby($lat, $lng, $distance = 3, $limit = 30)
 	{
 		if ($distance > 6 || is_null($distance)) $distance = 3;
 		if ($limit > 40 || is_null($limit)) $limit = 30;
 		$venueIds = DB::table('locations')
-			->select(DB::raw("ST_DISTANCE_SPHERE(POINT(lng,lat),POINT($userLng,$userLat)) as distance , lat , lng , id,venue_id"))
+			->select(DB::raw("ST_DISTANCE_SPHERE(POINT(lng,lat),POINT($lng,$lat)) as distance , lat , lng , id,venue_id"))
 			->from('locations')
 			->havingRaw("distance < $distance*1000")
 			->orderBy('distance')
 			->pluck('venue_id')
 			->all();
-		if (count($venueIds)==0)
+		if (count($venueIds) == 0)
 			return collect();
 		$idsImploded = implode(',', $venueIds);
 		$venues = Venue::whereIn('id', $venueIds)->orderByRaw("field(id,{$idsImploded})", $venueIds)->take($limit)->get();
+		$venues->map(function ($model) use ($lat, $lng)
+		{
+			$model['distance'] = round($this->vincentyGreatCircleDistance($model->location->lat, $model->location->lng, $lat, $lng), 2);
+		});
 		return $venues;
 	}
 
@@ -230,12 +234,15 @@ class DbVenueRepository implements VenueRepository {
 		return $searchedTags;
 	}
 
-	public function findByIds($ids, $lat = null, $lng = null)
+	public function findByIds($ids, City $city, $lat = null, $lng = null)
 	{
 		if (count($ids) == 0)
 			return collect();
 		$idsImploded = implode(',', $ids);
-		$venues = Venue::whereIn('id', $ids)->orderByRaw("field(id,{$idsImploded})", $ids)->get();
+		$venues = Venue::whereIn('id', $ids)->whereHas('location', function ($query) use ($city)
+		{
+			$query->whereCityId($city->getKey());
+		})->orderByRaw("field(id,{$idsImploded})", $ids)->get();
 		if (!(is_null($lat) || is_null($lng)))
 			$venues->map(function ($model) use ($lat, $lng)
 			{

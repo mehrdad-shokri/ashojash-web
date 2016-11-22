@@ -13,17 +13,20 @@ use Illuminate\Support\Collection;
 
 class ElasticSearchRepository implements SearchRepository {
 
-	public function suggestVenue($name)
+	public function suggestVenue($name,$limit=200)
 	{
 		$client = ClientBuilder::create()->build();
 		$params = [
 			'index' => 'ashojash',
 			'type' => 'venues',
+			"size" => $limit,
 			'body' => [
+				"min_score"=> 2,
 				'query' => [
 					"match" => [
 						'name_suggest' => [
-							'query' => $name
+							'query' => $name,
+							'fuzziness' => 1
 						]
 					]
 				],

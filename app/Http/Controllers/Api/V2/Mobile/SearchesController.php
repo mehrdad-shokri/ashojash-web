@@ -11,6 +11,7 @@ use app\Repository\CityRepository;
 use app\Repository\SearchRepository;
 use app\Repository\StreetRepository;
 use app\Repository\VenueRepository;
+use App\Venue;
 use App\VenueTagCombined;
 use Illuminate\Http\Request;
 
@@ -56,6 +57,7 @@ class SearchesController extends BaseController {
 		if ($validator->fails())
 			$this->response->errorBadRequest("Validation failed.");
 		$userCity = $this->cityRepository->getCity($lat, $lng);
+
 		if (is_null($userCity))
 		{
 			return $this->response->errorBadRequest('We are not in your city yet.');
@@ -87,7 +89,7 @@ class SearchesController extends BaseController {
 		{
 //			search in specific street
 			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if ($haveQuery && !$haveStreetName)
@@ -95,26 +97,26 @@ class SearchesController extends BaseController {
 			//			find nearby places with query
 			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
 			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && $haveStreetName)
 		{
 //			find venues in specif street
 			$ids = $streetVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && !$haveStreetName)
 		{
 //			find all nearby places
 			$ids = $nearbyVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 	}
 
-	public function suggestVenues(Request $request)
+	public function suggestTerm(Request $request)
 	{
 		$lat = $request->get('lat');
 		$lng = $request->get('lng');
@@ -131,10 +133,9 @@ class SearchesController extends BaseController {
 		{
 			return $this->response->errorBadRequest("We are not in your city yet.");
 		}
-		$tags = $this->repository->suggestTag($request->get('query'));
 		$venues = $this->repository->suggestVenue($request->get('query'));
-		$cityVenue = $this->venueRepository->cityVenues($userCity);
-		$venues = $venues->whereIn('id', $cityVenue->pluck('id')->all());
+		$venues = $this->venueRepository->findByIds($venues->pluck('id')->all(), $userCity, $lat, $lng);
+		$tags = $this->repository->suggestTag($request->get('query'));
 		$venueTagsCombined = new VenueTagCombined($venues, $tags);
 		return $this->response->item($venueTagsCombined, new VenueTagCombinedTransformer());
 	}
