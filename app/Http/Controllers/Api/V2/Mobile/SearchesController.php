@@ -69,7 +69,7 @@ class SearchesController extends BaseController {
 		$haveStreetName = $request->get('streetName');
 		if ($haveQuery)
 		{
-			$queryVenueIds = $this->repository->searchVenue($request->get('query'), $userCity)->pluck('id');
+			$queryVenueIds = $this->repository->searchVenue($request->get('query'))->pluck('id');
 		}
 		if ($haveStreetName)
 		{
@@ -94,10 +94,20 @@ class SearchesController extends BaseController {
 		}
 		if ($haveQuery && !$haveStreetName)
 		{
-			//			find nearby places with query
-			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
-			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
-			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+//			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
+//			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
+//			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+
+
+			/*
+			 * SEARCHING FOR A SPECIFIC VENUE SHOULD BRING THAT ONLY
+			 * SEARCHING FOR GENERAL TERMS SHOULD ONLY BRING NEARBY RESULTS
+			 * */
+			/*
+			 * NOW WE ARE RETURNING RESULTS BASED ON QUERY RELEVANCE THERE SHOULD BE A QUERY PARAM TO SORT IT BY DISTANCE
+			 * */
+			$venues = $this->venueRepository->findByIds($queryVenueIds->all(), $userCity, $lat, $lng);
+			$venues = $venues->sortBy('distance');
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && $haveStreetName)

@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class ElasticSearchRepository implements SearchRepository {
 
-	public function suggestVenue($name,$limit=200)
+	public function suggestVenue($name, $limit = 100)
 	{
 		$client = ClientBuilder::create()->build();
 		$params = [
@@ -21,7 +21,7 @@ class ElasticSearchRepository implements SearchRepository {
 			'type' => 'venues',
 			"size" => $limit,
 			'body' => [
-				"min_score"=> 2,
+				"min_score" => 2,
 				'query' => [
 					"match" => [
 						'name_suggest' => [
@@ -36,13 +36,15 @@ class ElasticSearchRepository implements SearchRepository {
 		return $this->mapVenuesToCollection($results);
 	}
 
-	public function searchVenue($name)
+	public function searchVenue($name, $limit = 100)
 	{
 		$client = ClientBuilder::create()->build();
 		$params = [
 			'index' => 'ashojash',
 			'type' => 'venues',
+			"size" => $limit,
 			'body' => [
+				"min_score" => 2,
 				'query' => [
 					'dis_max' => [
 						'queries' => [
@@ -50,7 +52,8 @@ class ElasticSearchRepository implements SearchRepository {
 								"match" => [
 									'name' => [
 										'query' => $name,
-										'boost' => 100
+										'boost' => 100,
+										'fuzziness' => 1
 									]
 								]
 							],

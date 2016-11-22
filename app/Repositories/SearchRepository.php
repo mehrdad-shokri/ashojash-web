@@ -9,7 +9,7 @@ interface SearchRepository {
 
 	public function suggestVenue($name,$limit=100);
 
-	public function searchVenue($name);
+	public function searchVenue($name,$limit=100);
 
 	public function suggestStreet($name, City $city);
 
