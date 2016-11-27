@@ -13,7 +13,7 @@ interface VenueRepository {
 
 	public function findById($id);
 
-	public function findByIds($ids,$lat,$lng);
+	public function findByIds($ids, City $city, $lat, $lng);
 
 	public function all($with);
 
@@ -49,5 +49,5 @@ interface VenueRepository {
 
 	public function searchTag(Venue $venue, $query, $filter = true);
 
-	public function venuesNearStreet ($streetId);
+	public function venuesNearStreet($streetId);
 }

@@ -11,6 +11,7 @@ use app\Repository\CityRepository;
 use app\Repository\SearchRepository;
 use app\Repository\StreetRepository;
 use app\Repository\VenueRepository;
+use App\Venue;
 use App\VenueTagCombined;
 use Illuminate\Http\Request;
 
@@ -49,6 +50,7 @@ class SearchesController extends BaseController {
 		$rules = [
 			'lat' => 'required|numeric',
 			'lng' => 'required|numeric',
+			'limit' => 'integer|min:1|max:100',
 			'streetName' => 'string',
 			'query' => 'string'
 		];
@@ -56,6 +58,7 @@ class SearchesController extends BaseController {
 		if ($validator->fails())
 			$this->response->errorBadRequest("Validation failed.");
 		$userCity = $this->cityRepository->getCity($lat, $lng);
+		$limit = ($request->get('limit')) ? (int) $request->get('limit') : 30;
 		if (is_null($userCity))
 		{
 			return $this->response->errorBadRequest('We are not in your city yet.');
@@ -67,7 +70,7 @@ class SearchesController extends BaseController {
 		$haveStreetName = $request->get('streetName');
 		if ($haveQuery)
 		{
-			$queryVenueIds = $this->repository->searchVenue($request->get('query'), $userCity)->pluck('id');
+			$queryVenueIds = $this->repository->searchVenue($request->get('query'))->pluck('id');
 		}
 		if ($haveStreetName)
 		{
@@ -87,34 +90,45 @@ class SearchesController extends BaseController {
 		{
 //			search in specific street
 			$ids = $queryVenueIds->intersect($streetVenueIds)->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if ($haveQuery && !$haveStreetName)
 		{
-			//			find nearby places with query
+			/*
 			$ids = $queryVenueIds->intersect($nearbyVenueIds)->all();
 			if (sizeof($ids) == 0) $ids = $queryVenueIds->toArray();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng);
+			*/
+
+			/*
+			 * SEARCHING FOR A SPECIFIC VENUE SHOULD BRING THAT ONLY
+			 * SEARCHING FOR GENERAL TERMS SHOULD ONLY BRING NEARBY RESULTS
+			 * */
+			/*
+			 * NOW WE ARE RETURNING RESULTS BASED ON QUERY RELEVANCE THERE SHOULD BE A QUERY PARAM TO SORT IT BY DISTANCE
+			 * */
+			$venues = $this->venueRepository->findByIds($queryVenueIds->all(), $userCity, $lat, $lng)->take($limit);
+			$venues = $venues->sortBy('distance');
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && $haveStreetName)
 		{
 //			find venues in specif street
 			$ids = $streetVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 		if (!$haveQuery && !$haveStreetName)
 		{
 //			find all nearby places
 			$ids = $nearbyVenueIds->all();
-			$venues = $this->venueRepository->findByIds($ids, $lat, $lng);
+			$venues = $this->venueRepository->findByIds($ids, $userCity, $lat, $lng)->take($limit);
 			return $this->response->collection($venues, new VenueTransformer());
 		}
 	}
 
-	public function suggestVenues(Request $request)
+	public function suggestTerm(Request $request)
 	{
 		$lat = $request->get('lat');
 		$lng = $request->get('lng');
@@ -131,10 +145,9 @@ class SearchesController extends BaseController {
 		{
 			return $this->response->errorBadRequest("We are not in your city yet.");
 		}
-		$tags = $this->repository->suggestTag($request->get('query'));
 		$venues = $this->repository->suggestVenue($request->get('query'));
-		$cityVenue = $this->venueRepository->cityVenues($userCity);
-		$venues = $venues->whereIn('id', $cityVenue->pluck('id')->all());
+		$venues = $this->venueRepository->findByIds($venues->pluck('id')->all(), $userCity, $lat, $lng);
+		$tags = $this->repository->suggestTag($request->get('query'));
 		$venueTagsCombined = new VenueTagCombined($venues, $tags);
 		return $this->response->item($venueTagsCombined, new VenueTagCombinedTransformer());
 	}
