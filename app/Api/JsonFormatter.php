@@ -16,7 +16,6 @@ class JsonFormatter extends Json {
 	 */
 	protected function encode($content)
 	{
-//		if (array_key_exists(['meta']['pagination']['links'], $content))
 		if (isset($content['meta']['pagination']['links']))
 			$content['meta']['pagination']['links'] = (object) $content['meta']['pagination']['links'];
 		return json_encode($content);

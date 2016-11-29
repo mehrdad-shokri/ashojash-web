@@ -63,36 +63,11 @@ exports.babel = function(path) {
 				}
 		}
 }
-exports.reactHot = function(path) {
+exports.reactHot = function() {
 		return {
-				module: {
-						loaders: [
-								{
-										test: /\.(js|jsx)$/,
-										include: path,
-										// loaders: ['react-hot', 'jsx'],
-										loaders: ['jsx'],
-										exclude: /node_modules/,
-								}
-						]
-				},
 				plugins: [
 						new webpack.HotModuleReplacementPlugin()
 				]
-		}
-}
-exports.jsx = function(path) {
-		return {
-				module: {
-						loaders: [
-								{
-										test: /\.jsx$/,
-										loader: 'jsx', // <-- changed line
-										include: path,
-										exclude: /node_modules/,
-								}
-						]
-				}
 		}
 }
 exports.minify = function() {

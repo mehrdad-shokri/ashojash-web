@@ -16,7 +16,8 @@ const initialState = {
 		venueTags: null,
 		hasVenueTags: false,
 		isLoadingVenueTags: false,
-		venueTagsSearch: null
+		venueTagsSearch: null,
+		nextPageUrl: null,
 };
 
 export default createReducer(initialState, {
@@ -24,7 +25,15 @@ export default createReducer(initialState, {
 				return {...state, isRequesting: true, hasMessage: false}
 		},
 		[VENUE_RESPONSE]: (state, payload)=> {
-				return {...state, isRequesting: false, hasVenues: true, venues: payload, hasMessage: false}
+				payload.data.push.apply(payload.data, state.venues)
+				return {
+						...state,
+						isRequesting: false,
+						hasVenues: true,
+						venues: payload.data,
+						hasMessage: false,
+						nextPageUrl: payload.meta.pagination.links.next
+				}
 		},
 		[VENUE_MESSAGE]: (state, payload)=> {
 				return {

@@ -50,4 +50,6 @@ interface VenueRepository {
 	public function searchTag(Venue $venue, $query, $filter = true);
 
 	public function venuesNearStreet($streetId);
+
+	public function paginateCollection($collection, $perPage = 15, $pageName = 'page', $page = null);
 }

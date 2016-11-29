@@ -12,21 +12,37 @@ import {
 }    from 'material-ui/Table';
 
 class Venues extends Component {
+		constructor(props) {
+				super(props);
+				this.handleScroll = this.handleScroll.bind(this);
+		}
+
 		static contextTypes = {
 				router: React.PropTypes.object
 		}
 
-		constructor(props) {
-				super(props);
-				this.state = {height: "500px"};
+		handleScroll() {
+				var h = document.documentElement,
+						b = document.body,
+						st = 'scrollTop',
+						sh = 'scrollHeight';
+				var percent = parseInt((h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100);
+				if (percent > 70 && !this.props.isRequesting) {
+						progress.start();
+						this.props.getVenues();
+				}
 		}
-
 
 		componentDidMount() {
 				if (!this.props.hasVenues) {
 						progress.start();
 						this.props.getVenues();
 				}
+				window.addEventListener('scroll', this.handleScroll);
+		}
+
+		componentWillUnmount() {
+				window.removeEventListener('scroll', this.handleScroll);
 		}
 
 		componentDidUpdate() {
@@ -35,11 +51,12 @@ class Venues extends Component {
 				}
 		}
 
+
 		render() {
 				return (
 						<div>
-								<Table height={this.state.height}
-											 fixedHeader={true}>
+								<Table
+										fixedHeader={true}>
 										<TableHeader
 												displaySelectAll={false}
 												adjustForCheckbox={false}
