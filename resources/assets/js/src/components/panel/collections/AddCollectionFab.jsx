@@ -3,7 +3,7 @@ import Link from 'react-router/lib/Link';
 import styles from '../../../../../sass/components/panel/collections/fab/fab.scss';
 const classNames = require('classnames/bind');
 const cx = classNames.bind(styles);
-export default class Fab extends Component {
+export default class AddCollectionFab extends Component {
 		render() {
 				return (
 						<div>
@@ -11,7 +11,7 @@ export default class Fab extends Component {
 										<li className={cx("mfb-component__wrap")}>
 												<Link
 														to={{
-																pathname: '/admin/panel/collection/new',
+																pathname: '/admin/panel/collections/new',
 																state: {modal: true, returnTo: this.props.pathname}
 														}}
 														className={cx("mfb-component__button--main")}>

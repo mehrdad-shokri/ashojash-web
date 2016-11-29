@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V2\Backend;
 
 
+use App\Api\NoDataArraySerializer;
+use App\Api\PaginatorArraySerializer;
 use App\Api\Transformer\Backend\CollectionTransformer;
 use App\Api\Transformer\Backend\TagTransformer;
 use App\Api\Transformer\Backend\VenueTagTransformer;
@@ -21,8 +23,12 @@ use Carbon\Carbon;
 use Dingo\Api\Routing\Adapter\Laravel;
 use FileUploader;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use League\Fractal\Serializer\ArraySerializer;
+use League\Fractal\Serializer\DataArraySerializer;
+use League\Fractal\Serializer\JsonApiSerializer;
 use Vinkla\Hashids\Facades\Hashids;
 
 class VenuesController extends BaseController {
@@ -73,14 +79,18 @@ class VenuesController extends BaseController {
 		{
 			$venues = $this->venueRepository->all();
 		}
-		return $this->response->collection($venues, new VenueTransformer());
+		$venuesPaginated = $this->venueRepository->paginateCollection($venues, 30, 'page');
+		return $this->response->paginator($venuesPaginated, new VenueTransformer, [], function ($resource, $fractal)
+		{
+			$fractal->setSerializer(new ArraySerializer());
+		});
 	}
 
 	public function tags(Request $request)
 	{
 		$venue = $this->venueRepository->findBySlugOrFail($request->route('slug'));
 //		dd($venue->tags->first());
-		return $this->response->collection($venue->tags()->orderBy('tag_venue.created_at','desc')->get(), new VenueTagTransformer());
+		return $this->response->collection($venue->tags()->orderBy('tag_venue.created_at', 'desc')->get(), new VenueTagTransformer());
 	}
 
 	public function searchTag(Request $request)
