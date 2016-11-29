@@ -8,9 +8,11 @@ import {
 		VENUE_TAGS_SEARCH_RESPONSE
 }from './types';
 export function getVenues() {
-		return function(dispatch) {
+		return function(dispatch, getState) {
 				dispatch(getVenuesRequest());
-				getAuthInstance().post(`${ROOT_URL}/panel/venues`, null, {
+				let venuesUrl = getState().venues.nextPageUrl;
+				if (venuesUrl === null)  venuesUrl = `${ROOT_URL}/panel/venues`;
+				getAuthInstance().post(venuesUrl, null, {
 						transformResponse: function(data) {
 								return JSON.parse(data);
 						}

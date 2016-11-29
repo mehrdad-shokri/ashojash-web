@@ -186,30 +186,7 @@ class DbVenueRepository implements VenueRepository {
 		return $this->paginateCollection($this->search($query, $city, 100), $perPage);
 	}
 
-	/**
-	 * Paginate the given collection.
-	 *
-	 * @param \Illuminate\Support\Collection $collection
-	 * @param int $perPage
-	 * @param string $pageName
-	 * @param int|null $page
-	 *
-	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-	 */
-	private function paginateCollection($collection, $perPage = 15, $pageName = 'page', $page = null)
-	{
-		$page = $page ?: Paginator::resolveCurrentPage($pageName);
-		$page = (int) max(1, $page); // Handle pageResolver returning null and negative values
-		$path = Paginator::resolveCurrentPath();
 
-		return new LengthAwarePaginator(
-			$collection->forPage($page, $perPage),
-			count($collection),
-			$perPage,
-			$page,
-			compact('path', 'pageName')
-		);
-	}
 
 	public function venueReviewsCount(Venue $venue)
 	{
@@ -282,5 +259,31 @@ class DbVenueRepository implements VenueRepository {
 
 		$angle = atan2(sqrt($a), $b);
 		return $angle * $earthRadius;
+	}
+	/**
+	 * Paginate the given collection.
+	 *
+	 * @param \Illuminate\Support\Collection $collection
+	 * @param int $perPage
+	 * @param string $pageName
+	 * @param int|null $page
+	 *
+	 * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+	 */
+
+	public function paginateCollection($collection, $perPage = 15, $pageName = 'page', $page = null)
+	{
+
+		$page = $page ?: Paginator::resolveCurrentPage($pageName);
+		$page = (int) max(1, $page); // Handle pageResolver returning null and negative values
+		$path = Paginator::resolveCurrentPath();
+
+		return new LengthAwarePaginator(
+			$collection->forPage($page, $perPage),
+			count($collection),
+			$perPage,
+			$page,
+			compact('path', 'pageName')
+		);
 	}
 }
