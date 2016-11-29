@@ -11,7 +11,6 @@ use app\Repository\CityRepository;
 use app\Repository\SearchRepository;
 use app\Repository\StreetRepository;
 use app\Repository\VenueRepository;
-use App\Venue;
 use App\VenueTagCombined;
 use Illuminate\Http\Request;
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\v2\Mobile;
 
 use App\Api\Transformer\CollectionTransformer;
 use App\Http\Controllers\Api\v2\BaseController;
-use App\Http\Requests;
 use app\Repository\CityRepository;
 use app\Repository\CollectionRepository;
 
