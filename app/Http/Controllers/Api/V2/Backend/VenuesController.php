@@ -3,33 +3,16 @@
 namespace App\Http\Controllers\Api\V2\Backend;
 
 
-use App\Api\NoDataArraySerializer;
 use App\Api\PaginatorArraySerializer;
-use App\Api\Transformer\Backend\CollectionTransformer;
 use App\Api\Transformer\Backend\TagTransformer;
 use App\Api\Transformer\Backend\VenueTagTransformer;
-use App\Api\Transformer\CityTransformer;
 use App\Api\Transformer\VenueTransformer;
-use App\City;
-use App\Collection;
 use App\Http\Controllers\Api\v2\BaseController;
 use app\Repository\CityRepository;
-use app\Repository\CollectionRepository;
 use app\Repository\TagRepository;
 use app\Repository\VenueRepository;
-use App\Tag;
-use App\Venue;
-use Carbon\Carbon;
-use Dingo\Api\Routing\Adapter\Laravel;
-use FileUploader;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use League\Fractal\Serializer\ArraySerializer;
-use League\Fractal\Serializer\DataArraySerializer;
-use League\Fractal\Serializer\JsonApiSerializer;
-use Vinkla\Hashids\Facades\Hashids;
 
 class VenuesController extends BaseController {
 

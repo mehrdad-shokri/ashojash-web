@@ -3,24 +3,12 @@
 namespace App\Http\Controllers\Api\V2\Backend;
 
 
-use App\Api\Transformer\Backend\CollectionTransformer;
 use App\Api\Transformer\Backend\TagTransformer;
-use App\Api\Transformer\CityTransformer;
-use App\Api\Transformer\VenueTransformer;
-use App\Collection;
 use App\Http\Controllers\Api\v2\BaseController;
-use app\Repository\CityRepository;
-use app\Repository\CollectionRepository;
 use app\Repository\TagRepository;
-use app\Repository\VenueRepository;
-use App\Tag;
-use App\Venue;
-use Carbon\Carbon;
-use Dingo\Api\Routing\Adapter\Laravel;
 use FileUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Vinkla\Hashids\Facades\Hashids;
 
 class TagsController extends BaseController {

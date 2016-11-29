@@ -7,7 +7,6 @@ use App\Api\Transformer\PhotoTransformer;
 use App\Api\Transformer\ReviewTransformer;
 use App\Api\Transformer\VenueTransformer;
 use App\Http\Controllers\Api\v2\BaseController;
-use App\Http\Requests;
 use app\Repository\CityRepository;
 use app\Repository\MenuRepository;
 use app\Repository\PhotoRepository;

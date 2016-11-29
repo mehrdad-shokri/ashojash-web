@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Api\V2\Mobile;
 
 use App\Api\Transformer\CityTransformer;
 use App\Api\Transformer\VenueTransformer;
-use App\City;
 use App\Http\Controllers\Api\v2\BaseController;
-use App\Http\Requests;
 use app\Repository\CityRepository;
 use app\Repository\VenueRepository;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CitiesController extends BaseController {
 
