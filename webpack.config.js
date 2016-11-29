@@ -22,7 +22,7 @@ const common = {
 		}
 };
 
-const commonWithLoaders = merge(common, parts.babel(PATHS.app), parts.jsx(PATHS.app), parts.setupFonts([PATHS.fonts, PATHS.node]));
+const commonWithLoaders = merge(common,parts.babel(PATHS.app), parts.setupFonts([PATHS.fonts, PATHS.node]));
 var config;
 switch (process.env.npm_lifecycle_event) {
 		case 'build':
@@ -97,7 +97,7 @@ switch (process.env.npm_lifecycle_event) {
 						},*/
 						parts.setupSass(PATHS.styles, [PATHS.shared, PATHS.node]),
 						parts.setupUrl(PATHS.images),
-						parts.reactHot(PATHS.app),
+						parts.reactHot(),
 						{
 								plugins: [
 										new HtmlWebpackPlugin({
