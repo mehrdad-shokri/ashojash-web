@@ -9,6 +9,7 @@ use App\Api\Transformer\VenueTransformer;
 use App\Http\Controllers\Api\v2\BaseController;
 use app\Repository\CityRepository;
 use app\Repository\CollectionRepository;
+use app\Repository\SearchRepository;
 use app\Repository\VenueRepository;
 use Carbon\Carbon;
 use FileUploader;
@@ -30,20 +31,26 @@ class CollectionsController extends BaseController
      * @var CollectionRepository
      */
     private $collectionRepository;
+	/**
+	 * @var SearchRepository
+	 */
+	private $repository;
 
 
-    /**
-     * CollectionsController constructor.
-     * @param CityRepository $cityRepository
-     * @param VenueRepository $venueRepository
-     * @param CollectionRepository $collectionRepository
-     */
-    public function __construct(CityRepository $cityRepository, VenueRepository $venueRepository, CollectionRepository $collectionRepository)
+	/**
+	 * CollectionsController constructor.
+	 * @param CityRepository $cityRepository
+	 * @param VenueRepository $venueRepository
+	 * @param CollectionRepository $collectionRepository
+	 * @param SearchRepository $repository
+	 */
+    public function __construct(CityRepository $cityRepository, VenueRepository $venueRepository, CollectionRepository $collectionRepository,SearchRepository $repository)
     {
         $this->cityRepository = $cityRepository;
         $this->venueRepository = $venueRepository;
         $this->collectionRepository = $collectionRepository;
-    }
+		$this->repository = $repository;
+	}
 
     public function all(Request $request)
     {
@@ -68,7 +75,8 @@ class CollectionsController extends BaseController
             $this->response->errorBadRequest($this->errorResponse($validator));
         }
         $city = $this->cityRepository->findBySlugOrFail($request->get('slug'));
-        $venues = $this->venueRepository->search($request->get('query'), $city);
+		$venues = $this->repository->suggestVenue($request->get('query'));
+		$venues = $this->venueRepository->findByIds($venues->pluck('id')->all(), $city);
         return $this->response->collection($venues, new VenueTransformer());
     }
 
