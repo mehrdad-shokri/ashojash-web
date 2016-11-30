@@ -22,7 +22,7 @@ const common = {
 		}
 };
 
-const commonWithLoaders = merge(common,parts.babel(PATHS.app), parts.setupFonts([PATHS.fonts, PATHS.node]));
+const commonWithLoaders = merge(common, parts.babel(PATHS.app), parts.setupFonts([PATHS.fonts, PATHS.node]));
 var config;
 switch (process.env.npm_lifecycle_event) {
 		case 'build':
@@ -67,6 +67,11 @@ switch (process.env.npm_lifecycle_event) {
 												template: require('html-webpack-template'),
 												appMountId: 'appContainer',
 												mobile: true,
+												meta:{
+														'theme-color':'#FF5A64',
+														'msapplication-navbutton-color':'#FF5A64',
+														'apple-mobile-web-app-status-bar-style':'#FF5A64'
+												}
 										}),
 										new FaviconsWebpackPlugin(PATHS.statics + '\\ashojash.png')
 								]
@@ -92,9 +97,6 @@ switch (process.env.npm_lifecycle_event) {
 										publicPath: '/' //used for require.ensure. The setup
 								}
 						},
-					/*	{
-								devtool: 'eval-source-map'
-						},*/
 						parts.setupSass(PATHS.styles, [PATHS.shared, PATHS.node]),
 						parts.setupUrl(PATHS.images),
 						parts.reactHot(),
@@ -106,6 +108,11 @@ switch (process.env.npm_lifecycle_event) {
 												filename: 'index.html',
 												template: require('html-webpack-template'),
 												appMountId: 'appContainer',
+												meta: {
+														'theme-color':'#FF5A64',
+														'msapplication-navbutton-color':'#FF5A64',
+														'apple-mobile-web-app-status-bar-style':'#FF5A64'
+												},
 												mobile: true,
 										}),
 								]
