@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V2\Mobile;
 
 use App\Api\Transformer\TokenTransformer;
-use app\Api\Transformer\UserRegisteredTransformer;
+use App\Api\Transformer\UserRegisteredTransformer;
 use App\Api\Transformer\UserTransformer;
 use App\Http\Controllers\Api\v2\BaseController;
 use App\Http\Controllers\Auth\RegisterController;

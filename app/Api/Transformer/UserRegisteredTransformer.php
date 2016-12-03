@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Api\Transformer;
+<?php namespace App\Api\Transformer;
 
 
 use App\User;
