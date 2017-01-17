@@ -47,13 +47,7 @@ class PagesController extends Controller
 
     public function home()
     {
-        $cityCookie = Cookie::get('exp_current_city');
-        if ($cityCookie) {
-            return redirect()->action('CitiesController@index', $cityCookie);
-        } else {
-            $cities = $this->cityRepository->available();
-            return view('pages.home', compact('cities'));
-        }
+		return view('static.index');
     }
 
     public function about()
